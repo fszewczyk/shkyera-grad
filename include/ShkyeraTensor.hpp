@@ -1,2 +1,2 @@
-#include "math/Matrix.hpp"
-#include "math/Vector.hpp"
+#include "core/Matrix.hpp"
+#include "core/Vector.hpp"

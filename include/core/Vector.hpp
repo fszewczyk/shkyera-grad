@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdlib.h>
 #include <vector>
 
@@ -10,6 +11,12 @@ template <typename T> class Vector {
     Vector() = default;
     Vector(size_t size);
     Vector(size_t size, T value);
+
+    T norm();
+
+    void fill(T value);
+
+    size_t getSize() const;
 
     T &operator[](size_t i);
 
@@ -33,11 +40,7 @@ template <typename T> class Vector {
     template <typename U> void operator*=(const Vector<U> &v);
     template <typename U> void operator/=(const Vector<U> &v);
 
-    size_t getSize() const;
-
   private:
-    void fill(T value);
-
     size_t m_size;
     std::vector<T> m_data;
 };
@@ -52,6 +55,19 @@ template <typename T> Vector<T>::Vector(size_t size, T value) {
     m_data.resize(size);
     fill(value);
 }
+
+template <typename T> T Vector<T>::norm() {
+    T sum;
+    for (T val : m_data) {
+        sum += val * val;
+    }
+
+    return sqrt(sum);
+}
+
+template <typename T> void Vector<T>::fill(T value) { std::fill(m_data.begin(), m_data.end(), value); }
+
+template <typename T> size_t Vector<T>::getSize() const { return m_size; }
 
 template <typename T> T &Vector<T>::operator[](size_t i) { return m_data[i]; }
 
@@ -174,9 +190,5 @@ template <typename T> template <typename U> void Vector<T>::operator/=(const Vec
         m_data[i] /= v[i];
     }
 }
-
-template <typename T> size_t Vector<T>::getSize() const { return m_size; }
-
-template <typename T> void Vector<T>::fill(T value) { std::fill(m_data.begin(), m_data.end(), value); }
 
 } // namespace st
