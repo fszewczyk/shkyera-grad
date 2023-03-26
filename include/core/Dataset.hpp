@@ -2,7 +2,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
+#include "Utils.hpp"
 #include "Vector.hpp"
 
 namespace st {
@@ -20,7 +22,7 @@ template <typename T, typename U> class Data {
     static std::pair<Data, Data> splitIntoTrainAndTest(float proportion = 0.8);
 
   private:
-    static Data readLine(std::fstream &file, bool headers = false);
+    static Data readLine(std::string &line, bool headers = false);
 
     T m_label;
     Vector<U> m_data; //< TODO: Implement tensor
@@ -39,15 +41,42 @@ std::vector<Data<T, U>> Data<T, U>::loadDataset(std::string path, std::vector<st
                                                 bool containsHeaders) {
     std::fstream file(path, std::ios::in);
 
+    if (!file.is_open())
+        throw std::invalid_argument("Cannot read file " + path);
+
+    std::string line;
     if (containsHeaders) {
         headers.clear();
-        headers = Data<std::string, std::string>::readLine(file, true).getData();
+        std::getline(file, line);
+        headers = Data<std::string, std::string>::readLine(line, true).getData();
     }
+
+    std::vector<Data<T, U>> dataset;
+    while (std::getline(file, line)) {
+        dataset.push_back(readLine(line));
+    }
+
+    return dataset;
 }
 
-template <typename T, typename U> Data<T, U> Data<T, U>::readLine(std::fstream &file, bool headers) {
+template <typename T, typename U> Data<T, U> Data<T, U>::readLine(std::string &line, bool headers) {
+    bool setLabel = false;
     T label;
-    std::vector<U> data;
+    Vector<U> data;
+
+    std::string word;
+    std::stringstream stream(line);
+
+    while (std::getline(stream, word, ',')) {
+        if (!setLabel && !headers) {
+            label = convert<T>(word);
+            setLabel = true;
+        } else {
+            data.append(convert<U>(word));
+        }
+    }
+
+    return Data(label, data);
 }
 
 template <typename T, typename U>

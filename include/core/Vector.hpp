@@ -1,8 +1,8 @@
+#pragma once
+
 #include <math.h>
 #include <stdlib.h>
 #include <vector>
-
-#pragma once
 
 namespace st {
 
@@ -16,6 +16,7 @@ template <typename T> class Vector {
     T norm();
 
     void fill(T value);
+    void append(T value);
 
     size_t getSize() const;
 
@@ -72,6 +73,10 @@ template <typename T> T Vector<T>::norm() {
 }
 
 template <typename T> void Vector<T>::fill(T value) { std::fill(m_data.begin(), m_data.end(), value); }
+template <typename T> void Vector<T>::append(T value) {
+    m_data.push_back(value);
+    m_size++;
+}
 
 template <typename T> size_t Vector<T>::getSize() const { return m_size; }
 
