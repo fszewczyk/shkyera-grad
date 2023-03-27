@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../include/ShkyeraTensor.hpp"
 
 #include "datasetTest.hpp"
