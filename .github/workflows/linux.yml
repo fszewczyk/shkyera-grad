@@ -2,9 +2,9 @@ name: Linux
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -14,24 +14,28 @@ jobs:
       fail-fast: false
       matrix:
         conf:
-          - {
-            name: "Ubuntu g++",
-            os: ubuntu-latest,
-            compiler: "g++"
-          }
-          - {
-            name: "Ubuntu clang++",
-            os: ubuntu-latest,
-            compiler: "clang++"
-          }
-            
+          - { name: "Ubuntu g++", os: ubuntu-latest, compiler: "g++" }
+          - { name: "Ubuntu clang++", os: ubuntu-latest, compiler: "clang++" }
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      
-    - name: Build
-      env:
-        CXX: ${{matrix.conf.compiler}}
-      run: |
-          g++ include/ShkyeraTensorDemo.cpp --std=c++20
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build library
+        env:
+          CXX: ${{matrix.conf.compiler}}
+        run: |
+          g++ include/ShkyeraTensor.hpp --std=c++20
+
+      - name: Build examples
+        env:
+          CXX: ${{matrix.conf.compiler}}
+        run: |
+          g++ examples/algebra.cpp --std=c++20
+
+      - name: Test
+        env:
+          CXX: ${{matrix.conf.compiler}}
+        run: |
+          g++ tests/mainTest.cpp --std=c++20
           ./a.out
