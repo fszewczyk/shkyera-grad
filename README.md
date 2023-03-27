@@ -21,6 +21,14 @@ Simply import the library in your code
 #include "include/ShkyeraTensor.hpp"
 ```
 
+### Dataset
+```cpp
+st::Dataset<int, double> data("tests/preview.csv"); //< The first column is assumed to be the labels
+data.shuffle();                                     //< Randomly shuffles the data
+std::pair<st::Dataset<int,double>, st::Dataset<int,double>> trainAndTest = data.splitIntoTrainAndTest(0.6); //< Divides dataset into train and test set, with 0.6 proportion
+st::Dataset<int,double> headTestData = trainAndTest.second.head(); //< Gets first 5 rows of the Dataset
+```
+
 ### Linear Algebra
 #### Vector
 ```cpp
