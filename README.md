@@ -6,6 +6,7 @@
 
 ![LinuxBuild](https://github.com/fszewczyk/shkyera-tensor/actions/workflows/linux.yml/badge.svg) 
 ![MacOSBuild](https://github.com/fszewczyk/shkyera-tensor/actions/workflows/macos.yml/badge.svg) 
+![MacOSBuild](https://github.com/fszewczyk/shkyera-tensor/actions/workflows/windows.yml/badge.svg) 
 [![LICENSE](https://img.shields.io/badge/license-Beerware-yellow)](LICENSE) 
 
 </div>
