@@ -3,10 +3,19 @@
 #include "ShkyeraTensor.hpp"
 
 int main() {
-    auto vec = st::Vector<int>::random(10);
+    auto vec = st::Vector<int>::random(3, -5, 5);
+    auto mat = st::Matrix<int>::random(2, 4, -5, 5);
+    auto mat1 = st::Matrix<int>::random(4, 3, -5, 5);
 
-    std::cerr << vec << '\n';
-    std::cerr << vec.norm() << '\n';
+    std::cerr << mat << '\n';
+    std::cerr << mat1 << '\n';
+    std::cerr << mat * mat1 << '\n';
+
+    mat *= mat1;
+    std::cerr << mat << '\n';
+
+    if (false)
+        throw std::invalid_argument("Testing Actions :0");
 
     return 0;
 }

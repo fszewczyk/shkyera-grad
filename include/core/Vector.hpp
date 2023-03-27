@@ -113,6 +113,8 @@ template <typename T> template <typename U> T Vector<T>::dot(Vector<U> &v) const
     for (size_t i = 0; i < m_size; ++i) {
         result += m_data[i] * v[i];
     }
+
+    return result;
 }
 
 template <typename T> T &Vector<T>::operator()(size_t i) { return m_data[i]; }
