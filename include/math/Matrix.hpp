@@ -30,6 +30,7 @@ template <typename T> class Matrix {
     Vector<T> getColumn(size_t i) const;
 
     template <typename U> Vector<T> dot(Vector<U> &v) const;
+    Matrix<T> transpose() const;
 
     T &operator()(size_t row, size_t column);
     T at(size_t row, size_t column) const;
@@ -136,6 +137,18 @@ template <typename T> template <typename U> Vector<T> Matrix<T>::dot(Vector<U> &
     for (size_t row = 0; row < m_rows; ++row) {
         Vector<T> rowVector(m_data[row]);
         result(row) = v.dot(rowVector);
+    }
+
+    return result;
+}
+
+template <typename T> Matrix<T> Matrix<T>::transpose() const {
+    Matrix<T> result(m_columns, m_rows);
+
+    for (size_t row = 0; row < m_rows; ++row) {
+        for (size_t col = 0; col < m_columns; ++col) {
+            result(col, row) = at(row, col);
+        }
     }
 
     return result;
