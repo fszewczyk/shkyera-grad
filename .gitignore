@@ -3,6 +3,7 @@ data/
 
 .vscode/
 .clang-format
+*.out
 
 CMakeLists.txt
 build.sh

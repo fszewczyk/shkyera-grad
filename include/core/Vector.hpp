@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <vector>
 
+#include "Utils.hpp"
+
 namespace st {
 
 template <typename T> class Vector {
@@ -13,13 +15,22 @@ template <typename T> class Vector {
     Vector(size_t size);
     Vector(size_t size, T value);
 
+    static Vector<T> zeros(size_t size);
+    static Vector<T> ones(size_t size);
+    static Vector<T> random(size_t size, T low = -1, T high = 1);
+
     T norm();
 
+    void clear();
     void fill(T value);
     void append(T value);
 
     size_t getSize() const;
+    std::vector<T> getValues() const;
 
+    template <typename U> T dot(Vector<U> &v) const;
+
+    T &operator()(size_t i);
     T operator[](size_t i) const;
 
     template <typename U> Vector<T> operator+(const U &v) const;
@@ -63,8 +74,20 @@ template <typename T> Vector<T>::Vector(size_t size, T value) {
     fill(value);
 }
 
+template <typename T> Vector<T> Vector<T>::zeros(size_t size) { return Vector<T>(size, 0); }
+template <typename T> Vector<T> Vector<T>::ones(size_t size) { return Vector<T>(size, 1); }
+template <typename T> Vector<T> Vector<T>::random(size_t size, T low, T high) {
+    Vector<T> vec(size);
+
+    for (size_t i = 0; i < size; ++i) {
+        vec(i) = st::utils::randomValue<T>(low, high);
+    }
+
+    return vec;
+}
+
 template <typename T> T Vector<T>::norm() {
-    T sum;
+    T sum = 0;
     for (T val : m_data) {
         sum += val * val;
     }
@@ -72,6 +95,10 @@ template <typename T> T Vector<T>::norm() {
     return sqrt(sum);
 }
 
+template <typename T> void Vector<T>::clear() {
+    m_data.clear();
+    m_size = 0;
+}
 template <typename T> void Vector<T>::fill(T value) { std::fill(m_data.begin(), m_data.end(), value); }
 template <typename T> void Vector<T>::append(T value) {
     m_data.push_back(value);
@@ -79,7 +106,16 @@ template <typename T> void Vector<T>::append(T value) {
 }
 
 template <typename T> size_t Vector<T>::getSize() const { return m_size; }
+template <typename T> std::vector<T> Vector<T>::getValues() const { return m_data; }
 
+template <typename T> template <typename U> T Vector<T>::dot(Vector<U> &v) const {
+    T result = 0;
+    for (size_t i = 0; i < m_size; ++i) {
+        result += m_data[i] * v[i];
+    }
+}
+
+template <typename T> T &Vector<T>::operator()(size_t i) { return m_data[i]; }
 template <typename T> T Vector<T>::operator[](size_t i) const { return m_data[i]; }
 
 template <typename T> template <typename U> Vector<T> Vector<T>::operator+(const U &v) const {
@@ -200,6 +236,18 @@ template <typename T> template <typename U> void Vector<T>::operator/=(const Vec
     for (size_t i = 0; i < m_size; ++i) {
         m_data[i] /= v[i];
     }
+}
+
+template <typename T> inline std::ostream &operator<<(std::ostream &out, const Vector<T> &v) {
+    out << "{";
+    for (size_t i = 0; i < v.getSize(); ++i) {
+        out << v[i];
+        if (i + 1 != v.getSize())
+            out << ",";
+    }
+    out << "}";
+
+    return out;
 }
 
 } // namespace st
