@@ -1,3 +1,3 @@
-#include "core/Dataset.hpp"
-#include "core/Matrix.hpp"
-#include "core/Vector.hpp"
+#include "Dataset.hpp"
+#include "math/Matrix.hpp"
+#include "math/Vector.hpp"

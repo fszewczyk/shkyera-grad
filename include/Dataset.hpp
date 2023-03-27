@@ -4,8 +4,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "Utils.hpp"
-#include "Vector.hpp"
+#include "math/Utils.hpp"
+#include "math/Vector.hpp"
 
 namespace st {
 
