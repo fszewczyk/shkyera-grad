@@ -4,8 +4,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "Utils.hpp"
-#include "Vector.hpp"
+#include "math/Utils.hpp"
+#include "math/Vector.hpp"
 
 namespace st {
 
@@ -17,8 +17,7 @@ template <typename T, typename U> class Data {
     T getLabel() const;
     Vector<U> getData() const;
 
-    static std::vector<Data> loadDataset(std::string path, std::vector<std::string> &headers,
-                                         bool containsHeaders = true);
+    static std::vector<Data> loadDataset(std::string path, Vector<std::string> &headers, bool containsHeaders = true);
     static std::pair<Data, Data> splitIntoTrainAndTest(float proportion = 0.8);
 
   private:
@@ -37,8 +36,7 @@ template <typename T, typename U> T Data<T, U>::getLabel() const { return m_labe
 template <typename T, typename U> Vector<U> Data<T, U>::getData() const { return m_data; }
 
 template <typename T, typename U>
-std::vector<Data<T, U>> Data<T, U>::loadDataset(std::string path, std::vector<std::string> &headers,
-                                                bool containsHeaders) {
+std::vector<Data<T, U>> Data<T, U>::loadDataset(std::string path, Vector<std::string> &headers, bool containsHeaders) {
     std::fstream file(path, std::ios::in);
 
     if (!file.is_open())

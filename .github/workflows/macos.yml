@@ -1,4 +1,4 @@
-name: Linux
+name: MacOS
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         conf:
-          - { name: "Ubuntu g++", os: ubuntu-latest, compiler: "g++" }
+          - { name: "MacOS g++", os: macos-latest, compiler: "g++" }
 
     steps:
       - name: Checkout
