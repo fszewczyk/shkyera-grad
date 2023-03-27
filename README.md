@@ -21,6 +21,14 @@ Simply import the library in your code
 #include "include/ShkyeraTensor.hpp"
 ```
 
+### Dataset
+```cpp
+st::Dataset<int, double> data("tests/preview.csv"); //< The first column is assumed to be the labels
+data.shuffle();                                     //< Randomly shuffles the data
+std::pair<st::Dataset<int,double>, st::Dataset<int,double>> trainAndTest = data.splitIntoTrainAndTest(0.6); //< Divides dataset into train and test set, with 0.6 proportion
+st::Dataset<int,double> headTestData = trainAndTest.second.head(); //< Gets first 5 rows of the Dataset
+```
+
 ### Linear Algebra
 #### Vector
 ```cpp
@@ -35,16 +43,17 @@ vDouble -= 5; // Subtracting scalar from vector element-wise
 
 #### Matrix
 ```cpp
-st::Matrix<int> twosMat(4,3,2); // 4x3 integer matrix filled with 2
-auto randomMat = st::Matrix<double>::random(5,4,-2,-1); // 5x4 matrix with random doubles between -2 and 1
-auto onesMat = st::Matrix<double>::ones(4,2); // 5x4 matrix with random ones
+st::Matrix<int> twosMat(4, 3, 2);                          // 4x3 integer matrix filled with 2
+auto randomMat = st::Matrix<double>::random(5, 4, -2, -1); // 5x4 matrix with random doubles between -2 and 1
+auto onesMat = st::Matrix<double>::ones(4, 2);             // 5x4 matrix with random ones
 
-auto dotProduct = randomMat.dot(Vector<double>(5,1)) // Dot product 
-auto matrixMultiplication = mat * mat2; // Multiplying matrices
-mat *= mat2; // Multiplying matrices in-place
+auto dotProduct = randomMat.dot(st ::Vector<double>(5, 1)); // Dot product
+auto matrixMultiplication = randomMat * onesMat;            // Multiplying matrices
 
-mat += 3; // Adding a constants element-wise
-mat *= 2; // Multiplying by a constant element-wise
+randomMat *= onesMat; // Multiplying matrices in-place
+
+randomMat += 3; // Adding a constants element-wise
+randomMat *= 2; // Multiplying by a constant element-wise
 ```
 
 ## Roadmap

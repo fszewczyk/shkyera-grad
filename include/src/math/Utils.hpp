@@ -28,4 +28,6 @@ template <typename T> T randomValue(T low, T high) {
     }
 }
 
+template <typename T> void shuffle(std::vector<T> &v) { std::shuffle(std::begin(v), std::end(v), RANDOM_GENERATOR); }
+
 } // namespace st::utils

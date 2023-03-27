@@ -10,7 +10,7 @@ namespace st {
 
 template <typename T> class Vector {
   public:
-    Vector() = default;
+    Vector();
     Vector(std::vector<T> data);
     Vector(size_t size);
     Vector(size_t size, T value);
@@ -19,7 +19,8 @@ template <typename T> class Vector {
     static Vector<T> ones(size_t size);
     static Vector<T> random(size_t size, T low = -1, T high = 1);
 
-    T norm();
+    T norm() const;
+    T max() const;
 
     void clear();
     void fill(T value);
@@ -58,6 +59,8 @@ template <typename T> class Vector {
     std::vector<T> m_data;
 };
 
+template <typename T> Vector<T>::Vector() : m_size(0) {}
+
 template <typename T> Vector<T>::Vector(std::vector<T> data) {
     m_size = data.size();
     m_data = data;
@@ -86,13 +89,22 @@ template <typename T> Vector<T> Vector<T>::random(size_t size, T low, T high) {
     return vec;
 }
 
-template <typename T> T Vector<T>::norm() {
+template <typename T> T Vector<T>::norm() const {
     T sum = 0;
     for (T val : m_data) {
         sum += val * val;
     }
 
     return sqrt(sum);
+}
+
+template <typename T> T Vector<T>::max() const {
+    T pMax = std::numeric_limits<T>::lowest();
+    for (auto v : m_data) {
+        pMax = std::max(pMax, v);
+    }
+
+    return pMax;
 }
 
 template <typename T> void Vector<T>::clear() {
