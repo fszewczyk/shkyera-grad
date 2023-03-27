@@ -35,6 +35,7 @@ vDouble -= 5; // Subtracting scalar from vector element-wise
 
 #### Matrix
 ```cpp
+st::Matrix<int> twosMat(4,3,2); // 4x3 integer matrix filled with 2
 auto randomMat = st::Matrix<double>::random(5,4,-2,-1); // 5x4 matrix with random doubles between -2 and 1
 auto onesMat = st::Matrix<double>::ones(4,2); // 5x4 matrix with random ones
 
