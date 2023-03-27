@@ -59,6 +59,7 @@ randomMat *= 2; // Multiplying by a constant element-wise
 
 ## Roadmap
 - [X] Basic Linear Algebra
+- [X] Loading `.csv` datasets
 - [ ] Basic Machine Learning
 - [ ] Basic MLP
 - [ ] Tensor
