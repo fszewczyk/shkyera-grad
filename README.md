@@ -18,7 +18,7 @@ See `/examples` for more detailed usage.
 ### Quick start
 Simply import the library in your code
 ```cpp
-#include <include/ShkyeraTensor.hpp>
+#include "include/ShkyeraTensor.hpp"
 ```
 
 ### Linear Algebra
