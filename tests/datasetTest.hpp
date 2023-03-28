@@ -10,7 +10,7 @@ void runDataset();
 
 void st::tests::loadMNIST() {
 #ifdef _WIN32
-    st::Dataset data("tests\preview.csv"); //< The first column is assumed to be the labels
+    st::Dataset data("tests\\preview.csv"); //< The first column is assumed to be the labels
 #else
     st::Dataset data("tests/preview.csv"); //< The first column is assumed to be the labels
 #endif
