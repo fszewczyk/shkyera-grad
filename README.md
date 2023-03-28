@@ -10,7 +10,7 @@
 [![LICENSE](https://img.shields.io/badge/license-Beerware-yellow)](LICENSE) 
 
 </div>
-
+<i>First Deep Learning library <b>without</b> an implemntation of a tensor</i>
 </div>
 
 ## Usage
