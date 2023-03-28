@@ -36,4 +36,4 @@ jobs:
           CXX: ${{matrix.conf.compiler}}
         run: |
           g++ tests/mainTest.cpp --std=c++20 -o out.exe
-          out.exe
+          . .\out.exe
