@@ -25,6 +25,9 @@ template <typename T> class Vector {
     void clear();
     void fill(T value);
     void append(T value);
+    void resize(size_t size);
+
+    void softmax();
 
     size_t getSize() const;
     std::vector<T> getValues() const;
@@ -117,6 +120,23 @@ template <typename T> void Vector<T>::append(T value) {
     m_size++;
 }
 
+template <typename T> void Vector<T>::resize(size_t size) {
+    m_size = size;
+    m_data.resize(size);
+}
+
+template <typename T> void Vector<T>::softmax() {
+    double sum = 0;
+
+    for (const auto &v : m_data) {
+        sum += exp(v);
+    }
+
+    for (size_t i = 0; i < getSize(); ++i) {
+        m_data[i] = exp(m_data[i]) / sum;
+    }
+}
+
 template <typename T> size_t Vector<T>::getSize() const { return m_size; }
 template <typename T> std::vector<T> Vector<T>::getValues() const { return m_data; }
 
@@ -135,7 +155,7 @@ template <typename T> T Vector<T>::operator[](size_t i) const { return m_data[i]
 template <typename T> template <typename U> Vector<T> Vector<T>::operator+(const U &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] + v;
+        result(i) = m_data[i] + v;
     }
 
     return result;
@@ -144,7 +164,7 @@ template <typename T> template <typename U> Vector<T> Vector<T>::operator+(const
 template <typename T> template <typename U> Vector<T> Vector<T>::operator-(const U &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] - v;
+        result(i) = m_data[i] - v;
     }
 
     return result;
@@ -153,7 +173,7 @@ template <typename T> template <typename U> Vector<T> Vector<T>::operator-(const
 template <typename T> template <typename U> Vector<T> Vector<T>::operator*(const U &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] * v;
+        result(i) = m_data[i] * v;
     }
 
     return result;
@@ -162,7 +182,7 @@ template <typename T> template <typename U> Vector<T> Vector<T>::operator*(const
 template <typename T> template <typename U> Vector<T> Vector<T>::operator/(const U &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] / v;
+        result(i) = m_data[i] / v;
     }
 
     return result;
@@ -171,7 +191,7 @@ template <typename T> template <typename U> Vector<T> Vector<T>::operator/(const
 template <typename T> template <typename U> Vector<T> Vector<T>::operator+(const Vector<U> &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] + v[i];
+        result(i) = m_data[i] + v[i];
     }
 
     return result;
@@ -180,7 +200,7 @@ template <typename T> template <typename U> Vector<T> Vector<T>::operator+(const
 template <typename T> template <typename U> Vector<T> Vector<T>::operator-(const Vector<U> &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] - v[i];
+        result(i) = m_data[i] - v[i];
     }
 
     return result;
@@ -189,7 +209,7 @@ template <typename T> template <typename U> Vector<T> Vector<T>::operator-(const
 template <typename T> template <typename U> Vector<T> Vector<T>::operator*(const Vector<U> &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] * v[i];
+        result(i) = m_data[i] * v[i];
     }
 
     return result;
@@ -198,7 +218,7 @@ template <typename T> template <typename U> Vector<T> Vector<T>::operator*(const
 template <typename T> template <typename U> Vector<T> Vector<T>::operator/(const Vector<U> &v) const {
     Vector<T> result(m_size);
     for (size_t i = 0; i < m_size; ++i) {
-        result[i] = m_data[i] / v[i];
+        result(i) = m_data[i] / v[i];
     }
 
     return result;

@@ -9,8 +9,11 @@ int main() {
     auto [trainData, testData] =
         data.splitIntoTrainAndTest(0.6); //< Divides dataset into train and test set, with 0.6 proportion
 
-    auto headTestData = testData.head(); //< Gets first 5 rows of the Dataset
-    for (auto row : headTestData) {
-        std::cerr << row << '\n';
-    }
+    // Creating a neural network with 3 hidden layers with sizes 50,10,70
+    // First layer has sigmoid activation function, second one uses tanh
+    // Third one uses ReLU, because that's the default one
+    st::Network nn(trainData, {50, 10, 70}, {st::SIGMOID, st::TANH});
+
+    // Training the neural network with learning rate 0.01, batch size 7 for 10 epochs
+    nn.train(0.01, 7, 10);
 }
