@@ -9,8 +9,6 @@ int main() {
     auto [trainData, testData] =
         data.splitIntoTrainAndTest(0.6); //< Divides dataset into train and test set, with 0.6 proportion
 
-    auto headTestData = testData.head(); //< Gets first 5 rows of the Dataset
-    for (auto row : headTestData) {
-        std::cerr << row << '\n';
-    }
+    st::Network nn(trainData, {50, 10, 70}, {st::SIGMOID, st::TANH});
+    nn.train(0.01, 7, 10);
 }

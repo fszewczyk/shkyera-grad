@@ -3,128 +3,209 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
 
 #include "math/Utils.hpp"
 #include "math/Vector.hpp"
 
 namespace st {
 
-template <typename T, typename U> class Data {
+enum LABEL_TYPE { CONTINUOUS, CATEGORICAL };
+
+class Data {
   public:
     Data() = default;
-    Data(T label, Vector<U> data);
+    Data(Vector<double> label, Vector<double> data);
 
-    void normalize();
+    void normalize(size_t index, double min, double max);
 
-    T getLabel() const;
-    Vector<U> getData() const;
+    Vector<double> getLabel() const;
+    Vector<double> getData() const;
 
-    static Data<T, U> readLine(std::string &line, bool headers = false);
+    void resizeLabel(size_t size);
 
   private:
-    T m_label;
-    Vector<U> m_data; //< TODO: Implement tensor
+    Vector<double> m_label;
+    Vector<double> m_data; //< TODO: Implement tensor
 };
 
-template <typename T, typename U> class Dataset {
+class Dataset {
   public:
     Dataset() = default;
-    Dataset(std::vector<Data<T, U>> data);
-    Dataset(std::string path, bool containsHeaders = true);
+    Dataset(std::vector<Data> data);
+    Dataset(std::string path, LABEL_TYPE labelType = CATEGORICAL, bool containsHeaders = true);
 
     void shuffle();
-    std::vector<Data<T, U>> head(size_t size = 5) const;
+    std::vector<Data> head(size_t size = 5) const;
 
-    void loadDataset(std::string path, bool containsHeaders = true);
+    void loadDataset(std::string path, LABEL_TYPE labelType = CATEGORICAL, bool containsHeaders = true);
     std::pair<Dataset, Dataset> splitIntoTrainAndTest(float proportion = 0.8);
+
+    std::vector<Data> &getData();
+
+    size_t getInputSize() const;
+    size_t getOutputSize() const;
+
+    bool getLabelType() const;
 
     inline static bool NORMALIZE_FLOATS = true;
 
   private:
-    std::vector<std::string> m_headers;
-    std::vector<Data<T, U>> m_data;
+    Data readLine(std::string &line);
+    void oneHotEncodeLabels();
+    void normalize();
+
+    LABEL_TYPE m_labelType;
+
+    std::unordered_map<std::string, int> categoryToIndex;
+    std::unordered_map<int, std::string> indexToCategory;
+    std::vector<Data> m_data;
 };
 
-template <typename T, typename U> Data<T, U>::Data(T label, Vector<U> data) {
+Data::Data(Vector<double> label, Vector<double> data) {
     m_label = label;
     m_data = data;
 }
 
-template <typename T, typename U> void Data<T, U>::normalize() { m_data /= m_data.max(); }
-template <typename T, typename U> T Data<T, U>::getLabel() const { return m_label; }
-template <typename T, typename U> Vector<U> Data<T, U>::getData() const { return m_data; }
-
-template <typename T, typename U> Data<T, U> Data<T, U>::readLine(std::string &line, bool headers) {
-    bool setLabel = false;
-    T label;
-    Vector<U> data;
-
-    std::string word;
-    std::stringstream stream(line);
-
-    while (std::getline(stream, word, ',')) {
-        if (!setLabel && !headers) {
-            label = utils::convert<T>(word);
-            setLabel = true;
-        } else {
-            data.append(utils::convert<U>(word));
-        }
-    }
-
-    if constexpr (std::is_floating_point<U>::value) {
-        if (Dataset<T, U>::NORMALIZE_FLOATS)
-            data /= data.max();
-    }
-
-    return Data(label, data);
+void Data::normalize(size_t i, double min, double max) {
+    m_data(i) -= min;
+    m_data(i) /= std::max(0.001, (max - min));
 }
 
-template <typename T, typename U> inline std::ostream &operator<<(std::ostream &out, const Data<T, U> &data) {
-    return out << "DataRow:{Label:" << data.getLabel() << ", Data: " << data.getData() << "}";
+Vector<double> Data::getLabel() const { return m_label; }
+Vector<double> Data::getData() const { return m_data; }
+
+void Data::resizeLabel(size_t size) { m_label.resize(size); }
+
+inline std::ostream &operator<<(std::ostream &out, const Data &data) {
+    return out << "Data:{Label:" << data.getLabel() << ", Data: " << data.getData() << "}";
 }
 
-template <typename T, typename U> Dataset<T, U>::Dataset(std::string path, bool containsHeaders) {
-    loadDataset(path, containsHeaders);
+Dataset::Dataset(std::string path, LABEL_TYPE labelType, bool containsHeaders) {
+    loadDataset(path, labelType, containsHeaders);
 }
 
-template <typename T, typename U> Dataset<T, U>::Dataset(std::vector<Data<T, U>> data) { m_data = data; }
+Dataset::Dataset(std::vector<Data> data) { m_data = data; }
 
-template <typename T, typename U> void Dataset<T, U>::shuffle() { utils::shuffle(m_data); }
+void Dataset::shuffle() { utils::shuffle(m_data); }
 
-template <typename T, typename U> std::vector<Data<T, U>> Dataset<T, U>::head(size_t size) const {
+std::vector<Data> Dataset::head(size_t size) const {
     size = std::min(size, m_data.size());
-    std::vector<Data<T, U>> h(m_data.begin(), m_data.begin() + size);
+    std::vector<Data> h(m_data.begin(), m_data.begin() + size);
 
     return h;
 }
 
-template <typename T, typename U> void Dataset<T, U>::loadDataset(std::string path, bool containsHeaders) {
+void Dataset::loadDataset(std::string path, LABEL_TYPE labelType, bool containsHeaders) {
+    std::cerr << "Loading dataset: " << path << '\n';
+    m_labelType = labelType;
+
     std::fstream file(path, std::ios::in);
 
     if (!file.is_open())
         throw std::invalid_argument("Cannot read file " + path);
 
     std::string line;
-    if (containsHeaders) {
-        m_headers.clear();
+    if (containsHeaders)
         std::getline(file, line);
-        m_headers = Data<std::string, std::string>::readLine(line, true).getData().getValues();
+
+    std::vector<Data> dataset;
+    while (std::getline(file, line)) {
+        m_data.push_back(readLine(line));
     }
 
-    std::vector<Data<T, U>> dataset;
-    while (std::getline(file, line)) {
-        m_data.push_back(Data<T, U>::readLine(line));
+    if (labelType == CATEGORICAL)
+        oneHotEncodeLabels();
+
+    normalize();
+
+    std::cerr << "Loaded dataset: " << path << '\n';
+}
+
+Data Dataset::readLine(std::string &line) {
+    bool setLabel = false;
+    Vector<double> label;
+    Vector<double> data;
+
+    std::string word;
+    std::stringstream stream(line);
+
+    while (std::getline(stream, word, ',')) {
+        if (!setLabel) {
+            if (m_labelType == CONTINUOUS)
+                label = {1, utils::convert<double>(word)};
+            else if (m_labelType == CATEGORICAL) {
+                if (categoryToIndex.find(word) == categoryToIndex.end()) {
+                    categoryToIndex.insert({word, categoryToIndex.size()});
+                    indexToCategory.insert({categoryToIndex.size() - 1, word});
+                }
+
+                label = Vector<double>::zeros(categoryToIndex.size());
+                label(categoryToIndex[word]) = 1;
+            }
+
+            setLabel = true;
+        } else {
+            data.append(utils::convert<double>(word));
+        }
+    }
+
+    return Data(label, data);
+}
+
+std::vector<Data> &Dataset::getData() { return m_data; }
+
+void Dataset::oneHotEncodeLabels() {
+    for (auto &d : m_data) {
+        d.resizeLabel(categoryToIndex.size());
     }
 }
 
-template <typename T, typename U>
-std::pair<Dataset<T, U>, Dataset<T, U>> Dataset<T, U>::splitIntoTrainAndTest(float proportion) {
+void Dataset::normalize() {
+    if (m_data.empty())
+        return;
+
+    std::vector<double> dataMinimums(m_data[0].getData().getSize(), std::numeric_limits<double>::max());
+    std::vector<double> dataMaximums(m_data[0].getData().getSize(), std::numeric_limits<double>::lowest());
+
+    for (auto d : m_data) {
+        auto data = d.getData();
+        for (size_t i = 0; i < data.getSize(); ++i) {
+            dataMinimums[i] = std::min(dataMinimums[i], data[i]);
+            dataMaximums[i] = std::max(dataMaximums[i], data[i]);
+        }
+    }
+
+    for (auto &d : m_data) {
+        for (size_t i = 0; i < d.getData().getSize(); ++i) {
+            d.normalize(i, dataMinimums[i], dataMaximums[i]);
+        }
+    }
+}
+
+size_t Dataset::getInputSize() const {
+    if (m_data.empty())
+        throw std::runtime_error("Accessing data size, while the data is empty");
+
+    return m_data[0].getData().getSize();
+}
+
+size_t Dataset::getOutputSize() const {
+    if (m_data.empty())
+        throw std::runtime_error("Accessing data size, while the data is empty");
+
+    return m_data[0].getLabel().getSize();
+}
+
+bool Dataset::getLabelType() const { return m_labelType; }
+
+std::pair<Dataset, Dataset> Dataset::splitIntoTrainAndTest(float proportion) {
     size_t cutoff = static_cast<size_t>(proportion * m_data.size());
 
-    std::vector<Data<T, U>> train(m_data.begin(), m_data.begin() + cutoff);
-    std::vector<Data<T, U>> test(m_data.begin() + cutoff, m_data.end());
+    std::vector<Data> train(m_data.begin(), m_data.begin() + cutoff);
+    std::vector<Data> test(m_data.begin() + cutoff, m_data.end());
 
-    return {Dataset<T, U>(train), Dataset<T, U>(test)};
+    return {Dataset(train), Dataset(test)};
 }
 
 } // namespace st
