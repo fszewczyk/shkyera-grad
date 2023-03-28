@@ -24,37 +24,70 @@ Simply import the library in your code
 
 ### Dataset
 ```cpp
-st::Dataset<int, double> data("tests/preview.csv"); //< The first column is assumed to be the labels
-data.shuffle();                                     //< Randomly shuffles the data
-std::pair<st::Dataset<int,double>, st::Dataset<int,double>> trainAndTest = data.splitIntoTrainAndTest(0.6); //< Divides dataset into train and test set, with 0.6 proportion
-st::Dataset<int,double> headTestData = trainAndTest.second.head(); //< Gets first 5 rows of the Dataset
+// The first column is assumed to be the labels
+// Labels are catgorical
+st::Dataset<int, double> data("tests/preview.csv", CATEGORICAL); 
+
+// Shuffles the data
+data.shuffle();            
+
+// Divides dataset into train and test set, with 0.6 proportion                         
+std::pair<st::Dataset<int,double>, st::Dataset<int,double>> trainAndTest = data.splitIntoTrainAndTest(0.6); 
+
+// Gets first 5 rows of the Dataset
+st::Dataset<int,double> headTestData = trainAndTest.second.head(); 
+```
+
+### Network
+```cpp
+// Creating a neural network with 3 hidden layers
+// First one has 50 neurons and uses sigmoid activation
+// Second one has 30 neurons and uses sigmoid activation
+// First one has 10 neurons and uses ReLU activation (default one)
+st::Network nn(data, {50, 30, 10}, {st::SIGMOID, st::TANH});
+
+// Train the network with 0.01 learning rate, batch size of 64 for 10 epochs
+nn.train(0.01, 64, 10);
 ```
 
 ### Linear Algebra
 #### Vector
 ```cpp
-st::Vector<int> vInt(3); // vector of 3 integers
-st::Vector<double> vDouble(3,2.5); // vector of size 3, filled with 2.5 doubles
-auto randomFloatVec = st::Vector<float>::random(5, -3, 2); // float vector of size 5, filled with random values between -3 and 2
-auto zerosIntVec = st::Vector<int>::zeros(4); // zero vector of size 4
+// Vector of 3 integers
+st::Vector<int> vInt(3); 
 
-vDouble *= 2; // Myltiplying vector by scalar
-vDouble -= 5; // Subtracting scalar from vector element-wise
+// Vector of size 3, filled with 2.5 doubles
+st::Vector<double> vDouble(3,2.5); 
+
+// Float Vector of size 5, filled with random values between -3 and 2
+auto randomFloatVec = st::Vector<float>::random(5, -3, 2); 
+
+// Zero Vector of size 4
+auto zerosIntVec = st::Vector<int>::zeros(4); 
+
+// Sample algebra operations
+st::Vector<float> resultDot = vDouble.dot(vInt);
+resultDot *= 2; 
+resultDot -= 5; 
 ```
 
 #### Matrix
 ```cpp
-st::Matrix<int> twosMat(4, 3, 2);                          // 4x3 integer matrix filled with 2
-auto randomMat = st::Matrix<double>::random(5, 4, -2, -1); // 5x4 matrix with random doubles between -2 and 1
-auto onesMat = st::Matrix<double>::ones(4, 2);             // 5x4 matrix with random ones
+// 4x3 integer matrix filled with 2
+st::Matrix<int> twosMat(4, 3, 2);          
 
-auto dotProduct = randomMat.dot(st ::Vector<double>(5, 1)); // Dot product
-auto matrixMultiplication = randomMat * onesMat;            // Multiplying matrices
+// 5x4 matrix with random doubles between -2 and 1
+auto randomMat = st::Matrix<double>::random(5, 4, -2, -1); 
 
-randomMat *= onesMat; // Multiplying matrices in-place
+// 5x4 matrix with random ones
+auto onesMat = st::Matrix<double>::ones(4, 2);             
 
-randomMat += 3; // Adding a constants element-wise
-randomMat *= 2; // Multiplying by a constant element-wise
+// Sample algebra operations
+auto dotProduct = randomMat.dot(st ::Vector<double>(5, 1)); 
+auto matrixMultiplication = randomMat * onesMat;           
+randomMat *= onesMat; 
+randomMat += 3;
+randomMat *= 2;
 ```
 
 ## Roadmap
