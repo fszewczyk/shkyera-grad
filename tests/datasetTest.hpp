@@ -9,8 +9,13 @@ void runDataset();
 } // namespace st::tests
 
 void st::tests::loadMNIST() {
+#ifdef _WIN32
+    st::Dataset data("tests\preview.csv"); //< The first column is assumed to be the labels
+#else
     st::Dataset data("tests/preview.csv"); //< The first column is assumed to be the labels
-    data.shuffle();                        //< Randomly shuffles the data
+#endif
+
+    data.shuffle(); //< Randomly shuffles the data
     auto [trainData, testData] =
         data.splitIntoTrainAndTest(0.6); //< Divides dataset into train and test set, with 0.6 proportion
 
