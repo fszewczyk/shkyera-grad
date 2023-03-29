@@ -1,8 +1,8 @@
 build/
 data/
 
-doc/html
-doc/latex
+docs/html
+docs/latex
 
 .vscode/
 .clang-format
