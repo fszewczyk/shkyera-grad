@@ -1,7 +1,1 @@
-#include "src/Activation.hpp"
-#include "src/Dataset.hpp"
-#include "src/Layer.hpp"
-#include "src/Network.hpp"
-#include "src/math/Matrix.hpp"
-#include "src/math/Utils.hpp"
-#include "src/math/Vector.hpp"
+#include "src/Value.hpp"
