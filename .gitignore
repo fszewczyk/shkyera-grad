@@ -1,6 +1,9 @@
 build/
 data/
 
+docs/html
+docs/latex
+
 .vscode/
 .clang-format
 *.out
