@@ -26,19 +26,6 @@ var NAVTREE =
 [
   [ "Shkyera Tensor", "index.html", [
     [ "Classes", "annotated.html", [
-      [ "Usage", "index.html#autotoc_md0", [
-        [ "Quick start", "index.html#autotoc_md1", null ],
-        [ "Dataset", "index.html#autotoc_md2", null ],
-        [ "Network", "index.html#autotoc_md3", null ],
-        [ "Linear Algebra", "index.html#autotoc_md4", [
-          [ "Vector", "index.html#autotoc_md5", null ],
-          [ "Matrix", "index.html#autotoc_md6", null ]
-        ] ]
-      ] ],
-      [ "Roadmap", "index.html#autotoc_md7", null ],
-      [ "Contributing", "index.html#autotoc_md8", [
-        [ "Formatting", "index.html#autotoc_md9", null ]
-      ] ],
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ]
@@ -51,7 +38,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"Activation_8hpp_source.html"
+"Value_8hpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
