@@ -125,11 +125,6 @@ template <typename T> ValuePtr<T> Value<T>::pow(ValuePtr<T> exponent) {
     return result;
 }
 
-template <typename T> std::ostream &operator<<(std::ostream &os, const ValuePtr<T> &value) {
-    os << "Value(data=" << value->_data << ")";
-    return os;
-}
-
 template <typename T> std::vector<ValuePtr<T>> Value<T>::topologicalSort() {
     std::vector<ValuePtr<T>> sorted;
     std::unordered_set<Value<T> *> visited;
@@ -160,12 +155,9 @@ template <typename T> void Value<T>::backward() {
     }
 }
 
-namespace Activation {
-
-template <typename T> std::function<ValuePtr<T>(ValuePtr<T>)> tanh = [](ValuePtr<T> a) { return a->tanh(); };
-template <typename T> std::function<ValuePtr<T>(ValuePtr<T>)> relu = [](ValuePtr<T> a) { return a->relu(); };
-template <typename T> std::function<ValuePtr<T>(ValuePtr<T>)> exp = [](ValuePtr<T> a) { return a->exp(); };
-
-} // namespace Activation
+template <typename T> std::ostream &operator<<(std::ostream &os, const ValuePtr<T> &value) {
+    os << "Value(data=" << value->_data << ")";
+    return os;
+}
 
 } // namespace shkyera

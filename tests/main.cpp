@@ -3,10 +3,10 @@
 int main() {
     using namespace shkyera;
 
-    auto n = Neuron<double>(5, Activation::tanh<double>);
-    auto x = Vector<double>({1, 2, 3, 4, 5});
+    auto x = Vector<double>({2, 3});
+    auto layer = Layer<double>(5, 2, Activation::tanh<double>);
 
-    auto a = n(x);
+    auto a = layer(x);
 
     std::cerr << a << '\n';
 }

@@ -16,7 +16,7 @@ template <typename T> class Neuron {
     Neuron(size_t input);
     Neuron(size_t input, std::function<ValuePtr<T>(ValuePtr<T>)> activation);
 
-    ValuePtr<T> operator()(const Vector<T> &x);
+    ValuePtr<T> operator()(const Vector<T> &x) const;
 };
 
 template <typename T> Neuron<T>::Neuron(size_t input) {
@@ -29,7 +29,7 @@ Neuron<T>::Neuron(size_t input, std::function<ValuePtr<T>(ValuePtr<T>)> activati
     _activation = activation;
 }
 
-template <typename T> ValuePtr<T> Neuron<T>::operator()(const Vector<T> &x) {
+template <typename T> ValuePtr<T> Neuron<T>::operator()(const Vector<T> &x) const {
     return _activation(_bias + _weights.dot(x));
 }
 

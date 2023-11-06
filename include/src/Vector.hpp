@@ -20,6 +20,8 @@ template <typename T> class Vector {
     ValuePtr<T> operator[](size_t index) const;
 
     size_t size() const;
+
+    template <typename U> friend std::ostream &operator<<(std::ostream &os, const Vector<U> &vector);
 };
 
 template <typename T> Vector<T>::Vector(const std::vector<T> &values) {
@@ -45,5 +47,15 @@ template <typename T> ValuePtr<T> Vector<T>::dot(const Vector<T> &other) const {
 }
 
 template <typename T> ValuePtr<T> Vector<T>::operator[](size_t index) const { return _values[index]; }
+
+template <typename T> std::ostream &operator<<(std::ostream &os, const Vector<T> &vector) {
+    os << "Vector(size=" << vector.size() << ", data={";
+
+    for (const ValuePtr<T> val : vector._values)
+        os << val << ' ';
+
+    os << "})";
+    return os;
+}
 
 } // namespace shkyera
