@@ -8,6 +8,7 @@
 
 namespace shkyera {
 
+template <typename T> class Optimizer;
 template <typename T> class Value;
 template <typename T> using ValuePtr = std::shared_ptr<Value<T>>;
 
@@ -24,6 +25,8 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     std::vector<ValuePtr<T>> topologicalSort(std::vector<ValuePtr<T>> &sorted, std::unordered_set<Value<T> *> &visited);
 
   public:
+    friend class Optimizer<T>;
+
     static ValuePtr<T> create(T data);
 
     void backward();
@@ -31,6 +34,7 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
 
     ValuePtr<T> tanh();
     ValuePtr<T> relu();
+    ValuePtr<T> sigmoid();
     ValuePtr<T> exp();
     ValuePtr<T> pow(ValuePtr<T> exponent);
 
@@ -83,7 +87,19 @@ template <typename T> ValuePtr<T> Value<T>::tanh() {
     ValuePtr<T> result = Value<T>::create((std::exp(2 * thisValue->_data) - 1) / (std::exp(2 * thisValue->_data) + 1));
     result->_children = {thisValue};
     result->_backward = [thisValue, result]() {
-        thisValue->_gradient += (1 - (thisValue->_data * thisValue->_data)) * result->_gradient;
+        thisValue->_gradient += (1 - (result->_data * result->_data)) * result->_gradient;
+    };
+
+    return result;
+}
+
+template <typename T> ValuePtr<T> Value<T>::sigmoid() {
+    auto thisValue = this->shared_from_this();
+
+    ValuePtr<T> result = Value<T>::create(1 / (std::exp(-thisValue->_data) + 1));
+    result->_children = {thisValue};
+    result->_backward = [thisValue, result]() {
+        thisValue->_gradient += result->_data * (1 - result->_data) * result->_gradient;
     };
 
     return result;

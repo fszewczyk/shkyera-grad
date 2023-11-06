@@ -15,7 +15,7 @@ template <typename T> class MLP : public Module<T> {
     MLP(size_t input, std::vector<size_t> sizes, std::vector<Activation::Function<T>> activations);
 
     virtual Vector<T> operator()(const Vector<T> &x) const override;
-    virtual std::vector<ValuePtr<T>> paremeters() const override;
+    virtual std::vector<ValuePtr<T>> parameters() const override;
 };
 
 template <typename T>
@@ -45,7 +45,7 @@ template <typename T> Vector<T> MLP<T>::operator()(const Vector<T> &x) const {
 
 template <typename T> std::vector<ValuePtr<T>> MLP<T>::parameters() const {
     std::vector<ValuePtr<T>> params;
-    for (const Layer &l : _layers) {
+    for (const Layer<T> &l : _layers) {
         std::vector<ValuePtr<T>> layerParams = l.parameters();
         params.insert(params.end(), layerParams.begin(), layerParams.end());
     }

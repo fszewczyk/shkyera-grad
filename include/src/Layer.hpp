@@ -14,7 +14,7 @@ template <typename T> class Layer : public Module<T> {
     Layer(size_t input, size_t size, Activation::Function<T> activation = Activation::relu<T>);
 
     virtual Vector<T> operator()(const Vector<T> &x) const override;
-    virtual std::vector<ValuePtr<T>> paremeters() const override;
+    virtual std::vector<ValuePtr<T>> parameters() const override;
 };
 
 template <typename T> Layer<T>::Layer(size_t input, size_t size, Activation::Function<T> activation) {
@@ -36,7 +36,7 @@ template <typename T> Vector<T> Layer<T>::operator()(const Vector<T> &x) const {
 
 template <typename T> std::vector<ValuePtr<T>> Layer<T>::parameters() const {
     std::vector<ValuePtr<T>> params;
-    for (const Neuron &n : _neurons) {
+    for (const Neuron<T> &n : _neurons) {
         std::vector<ValuePtr<T>> neuronParams = n.parameters();
         params.insert(params.end(), neuronParams.begin(), neuronParams.end());
     }
