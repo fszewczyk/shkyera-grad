@@ -3,10 +3,20 @@
 int main() {
     using namespace shkyera;
 
-    auto x = Vector<double>({2, 3});
-    auto layer = Layer<double>(5, 2, Activation::tanh<double>);
+    std::vector<Vector<double>> xs = {Vector<double>::of({0, 0}), Vector<double>::of({1, 0}),
+                                      Vector<double>::of({0, 1}), Vector<double>::of({1, 1})};
+    std::vector<Vector<double>> ys = {Vector<double>::of({0}), Vector<double>::of({1}), Vector<double>::of({1}),
+                                      Vector<double>::of({0})};
 
-    auto a = layer(x);
+    auto mlp = MLP<double>(2, {3, 1}, {Activation::tanh<double>, Activation::tanh<double>});
+    auto lossFunction = Loss::MSE<double>;
 
-    std::cerr << a << '\n';
+    for (size_t epoch = 0; epoch < 10; epoch++) {
+        for (size_t sample = 0; sample < xs.size(); ++sample) {
+            auto pred = mlp(xs[sample]);
+            auto loss = lossFunction(pred, ys[sample]);
+
+            std::cerr << loss << '\n';
+        }
+    }
 }

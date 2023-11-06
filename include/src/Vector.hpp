@@ -12,11 +12,10 @@ template <typename T> class Vector {
 
   public:
     Vector() = default;
-    Vector(const std::vector<T> &values);
     Vector(std::vector<ValuePtr<T>> values);
+    static Vector<T> of(const std::vector<T> &values);
 
     ValuePtr<T> dot(const Vector<T> &other) const;
-
     ValuePtr<T> operator[](size_t index) const;
 
     size_t size() const;
@@ -24,12 +23,17 @@ template <typename T> class Vector {
     template <typename U> friend std::ostream &operator<<(std::ostream &os, const Vector<U> &vector);
 };
 
-template <typename T> Vector<T>::Vector(const std::vector<T> &values) {
-    _values.reserve(values.size());
-    std::for_each(values.begin(), values.end(), [this](const T &val) { _values.push_back(Value<T>::create(val)); });
-}
-
 template <typename T> Vector<T>::Vector(std::vector<ValuePtr<T>> values) { _values = values; }
+
+template <typename T> Vector<T> Vector<T>::of(const std::vector<T> &values) {
+    std::vector<ValuePtr<T>> valuePtrs;
+    valuePtrs.reserve(values.size());
+
+    std::for_each(values.begin(), values.end(),
+                  [&valuePtrs](const T &v) { valuePtrs.emplace_back(Value<T>::create(v)); });
+
+    return valuePtrs;
+}
 
 template <typename T> size_t Vector<T>::size() const { return _values.size(); }
 
