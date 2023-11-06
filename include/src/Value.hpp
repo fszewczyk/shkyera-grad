@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cmath>
 #include <iostream>
 #include <memory>
@@ -25,9 +27,10 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     static ValuePtr<T> create(T data);
 
     void backward();
-    T getGradient() { return _gradient; }
+    T getGradient();
 
     ValuePtr<T> tanh();
+    ValuePtr<T> relu();
     ValuePtr<T> exp();
     ValuePtr<T> pow(ValuePtr<T> exponent);
 
@@ -35,6 +38,7 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     template <typename U> friend ValuePtr<U> operator-(ValuePtr<U> a, ValuePtr<U> b);
     template <typename U> friend ValuePtr<U> operator*(ValuePtr<U> a, ValuePtr<U> b);
     template <typename U> friend ValuePtr<U> operator/(ValuePtr<U> a, ValuePtr<U> b);
+    template <typename U> friend ValuePtr<U> operator-(ValuePtr<U> a);
 
     template <typename U> friend std::ostream &operator<<(std::ostream &os, const ValuePtr<U> &value);
 };
@@ -42,6 +46,8 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
 template <typename T> Value<T>::Value(T data) : _data(data) {}
 
 template <typename T> ValuePtr<T> Value<T>::create(T data) { return std::shared_ptr<Value<T>>(new Value<T>(data)); }
+
+template <typename T> T Value<T>::getGradient() { return _gradient; }
 
 template <typename T> ValuePtr<T> operator+(ValuePtr<T> a, ValuePtr<T> b) {
     ValuePtr<T> result = Value<T>::create(a->_data + b->_data);
@@ -53,6 +59,8 @@ template <typename T> ValuePtr<T> operator+(ValuePtr<T> a, ValuePtr<T> b) {
 
     return result;
 }
+
+template <typename T> ValuePtr<T> operator-(ValuePtr<T> a, ValuePtr<T> b) { return a + (-b); }
 
 template <typename T> ValuePtr<T> operator*(ValuePtr<T> a, ValuePtr<T> b) {
     ValuePtr<T> result = Value<T>::create(a->_data * b->_data);
@@ -67,6 +75,8 @@ template <typename T> ValuePtr<T> operator*(ValuePtr<T> a, ValuePtr<T> b) {
 
 template <typename T> ValuePtr<T> operator/(ValuePtr<T> a, ValuePtr<T> b) { return a * (b->pow(Value<T>::create(-1))); }
 
+template <typename T> ValuePtr<T> operator-(ValuePtr<T> a) { return Value<T>::create(-1) * a; }
+
 template <typename T> ValuePtr<T> Value<T>::tanh() {
     auto thisValue = this->shared_from_this();
 
@@ -74,6 +84,18 @@ template <typename T> ValuePtr<T> Value<T>::tanh() {
     result->_children = {thisValue};
     result->_backward = [thisValue, result]() {
         thisValue->_gradient += (1 - (thisValue->_data * thisValue->_data)) * result->_gradient;
+    };
+
+    return result;
+}
+
+template <typename T> ValuePtr<T> Value<T>::relu() {
+    auto thisValue = this->shared_from_this();
+
+    ValuePtr<T> result = Value<T>::create(_data > 0 ? _data : 0);
+    result->_children = {thisValue};
+    result->_backward = [thisValue, result]() {
+        thisValue->_gradient += (result->_data > 0 ? 1 : 0) * result->_gradient;
     };
 
     return result;
@@ -137,5 +159,13 @@ template <typename T> void Value<T>::backward() {
         (*val)->_backward();
     }
 }
+
+namespace Activation {
+
+template <typename T> std::function<ValuePtr<T>(ValuePtr<T>)> tanh = [](ValuePtr<T> a) { return a->tanh(); };
+template <typename T> std::function<ValuePtr<T>(ValuePtr<T>)> relu = [](ValuePtr<T> a) { return a->relu(); };
+template <typename T> std::function<ValuePtr<T>(ValuePtr<T>)> exp = [](ValuePtr<T> a) { return a->exp(); };
+
+} // namespace Activation
 
 } // namespace shkyera

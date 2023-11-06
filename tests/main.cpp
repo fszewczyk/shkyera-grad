@@ -3,16 +3,10 @@
 int main() {
     using namespace shkyera;
 
-    auto a = Value<double>::create(1);
-    auto b = a * a;
-    auto c = b / Value<double>::create(7);
-    auto d = c->tanh();
-    auto e = d->pow(Value<double>::create(2));
-    auto f = e->exp();
+    auto n = Neuron<double>(5, Activation::tanh<double>);
+    auto x = Vector<double>({1, 2, 3, 4, 5});
 
-    std::cerr << f << '\n';
-    f->backward();
+    auto a = n(x);
 
-    for (auto v : {a, b, c, d, e, f})
-        std::cerr << v->getGradient() << '\n';
+    std::cerr << a << '\n';
 }
