@@ -6,11 +6,16 @@
 #include <unordered_set>
 #include <vector>
 
+#include "Type.hpp"
+
 namespace shkyera {
 
 template <typename T> class Optimizer;
 template <typename T> class Value;
 template <typename T> using ValuePtr = std::shared_ptr<Value<T>>;
+
+using Val32 = Value<Type::float32>;
+using Val64 = Value<Type::float64>;
 
 template <typename T> class Value : public std::enable_shared_from_this<Value<T>> {
   private:

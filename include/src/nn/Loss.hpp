@@ -1,10 +1,13 @@
 #pragma once
 
-#include "Value.hpp"
+#include "../core/Value.hpp"
 
 namespace shkyera::Loss {
 
 template <typename T> using Function = std::function<ValuePtr<T>(Vector<T> a, Vector<T> b)>;
+
+using Function32 = Function<Type::float32>;
+using Function64 = Function<Type::float64>;
 
 template <typename T>
 Function<T> MSE = [](Vector<T> a, Vector<T> b) {

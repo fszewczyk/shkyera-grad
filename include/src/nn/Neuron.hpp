@@ -1,13 +1,18 @@
 #pragma once
 
+#include "../core/Type.hpp"
+#include "../core/Utils.hpp"
+#include "../core/Value.hpp"
+#include "../core/Vector.hpp"
 #include "Module.hpp"
-#include "Utils.hpp"
-#include "Value.hpp"
-#include "Vector.hpp"
 
 namespace shkyera {
 
-template <typename T> class Neuron : public Module<T> {
+template <typename T> class Neuron;
+using Neuron32 = Neuron<Type::float32>;
+using Neuron64 = Neuron<Type::float64>;
+
+template <typename T> class Neuron {
   private:
     ValuePtr<T> _bias;
     Vector<T> _weights;
@@ -17,8 +22,8 @@ template <typename T> class Neuron : public Module<T> {
     Neuron(size_t input);
     Neuron(size_t input, std::function<ValuePtr<T>(ValuePtr<T>)> activation);
 
-    virtual Vector<T> operator()(const Vector<T> &x) const override;
-    virtual std::vector<ValuePtr<T>> parameters() const override;
+    Vector<T> operator()(const Vector<T> &x) const;
+    std::vector<ValuePtr<T>> parameters() const;
 };
 
 template <typename T> Neuron<T>::Neuron(size_t input) {

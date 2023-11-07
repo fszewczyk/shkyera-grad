@@ -2,10 +2,14 @@
 
 #include <vector>
 
+#include "../core/Type.hpp"
+#include "../core/Value.hpp"
 #include "Module.hpp"
-#include "Value.hpp"
 
 namespace shkyera {
+
+using Optimizer32 = Optimizer<Type::float32>;
+using Optimizer64 = Optimizer<Type::float32>;
 
 template <typename T> class Optimizer {
   private:

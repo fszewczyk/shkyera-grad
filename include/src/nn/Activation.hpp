@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Value.hpp"
+#include "../core/Type.hpp"
+#include "../core/Value.hpp"
 
 namespace shkyera::Activation {
 

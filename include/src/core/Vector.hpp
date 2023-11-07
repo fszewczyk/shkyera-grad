@@ -2,9 +2,14 @@
 
 #include <exception>
 
+#include "Type.hpp"
 #include "Value.hpp"
 
 namespace shkyera {
+
+template <typename T> class Vector;
+using Vec32 = Vector<Type::float32>;
+using Vec64 = Vector<Type::float64>;
 
 template <typename T> class Vector {
   private:
