@@ -14,7 +14,7 @@ int main() {
                 .build();
     // clang-format on
 
-    auto optimizer = Optimizer32(mlp->parameters(), 0.1);
+    auto optimizer = Optimizer<Type::float32>(mlp->parameters(), 0.1);
     auto lossFunction = Loss::MSE<Type::float32>;
 
     for (size_t epoch = 0; epoch < 1000; epoch++) {
