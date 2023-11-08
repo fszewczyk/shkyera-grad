@@ -28,7 +28,7 @@ template <typename T> Vector<T> ReLU<T>::operator()(const Vector<T> &x) const {
     std::vector<ValuePtr<T>> out;
     out.reserve(x.size());
 
-    for (auto entry : x)
+    for (auto &entry : x)
         out.emplace_back(entry->relu());
 
     return Vector<T>(out);

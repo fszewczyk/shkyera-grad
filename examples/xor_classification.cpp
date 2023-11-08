@@ -16,7 +16,7 @@ int main() {
     auto mlp = SequentialBuilder<Type::float32>::begin()
                 .add(Linear32::create(2, 15))
                 .add(ReLU32::create())
-                .add(Dropout32::create(15, 5, 0.3))
+                .add(Dropout32::create(15, 5, 0.2))
                 .add(Tanh32::create())
                 .add(Linear32::create(5, 2))
                 .add(Softmax32::create())
@@ -27,7 +27,7 @@ int main() {
     Loss::Function32 lossFunction = Loss::CrossEntropy<Type::float32>;
 
     // ------ TRAINING THE NETWORK ------- //
-    for (size_t epoch = 0; epoch < 500; epoch++) {
+    for (size_t epoch = 0; epoch < 100; epoch++) {
         auto epochLoss = Val32::create(0);
 
         optimizer.reset();

@@ -46,8 +46,8 @@ template <typename T> std::vector<ValuePtr<T>> Neuron<T>::parameters() const {
     std::vector<ValuePtr<T>> params;
     params.reserve(_weights.size() + 1);
 
-    for (size_t i = 0; i < _weights.size(); ++i)
-        params.push_back(_weights[i]);
+    for (auto &w : _weights)
+        params.push_back(w);
 
     params.push_back(_bias);
 
