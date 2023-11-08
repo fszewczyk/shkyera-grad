@@ -57,6 +57,9 @@ template <typename T> void Adam<T>::step() {
         T firstMoment = _b1 * getFirstMoment(param) + (1 - _b1) * gradient;
         T secondMoment = _b2 * getSecondMoment(param) + (1 - _b2) * gradient * gradient;
 
+        _firstMoment.insert({param.get(), firstMoment});
+        _secondMoment.insert({param.get(), secondMoment});
+
         T firstMomentHat = firstMoment / (1 - pow(_b1, _timestep));
         T secondMomentHat = secondMoment / (1 - pow(_b2, _timestep));
 

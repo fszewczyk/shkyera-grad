@@ -25,7 +25,7 @@ int main() {
                 .build();
     // clang-format on
 
-    Adam32 optimizer = Adam<Type::float32>(mlp->parameters(), 0.05);
+    Adam32 optimizer = Adam<Type::float32>(mlp->parameters(), 0.01);
     Loss::Function32 lossFunction = Loss::CrossEntropy<Type::float32>;
 
     // ------ TRAINING THE NETWORK ------- //
