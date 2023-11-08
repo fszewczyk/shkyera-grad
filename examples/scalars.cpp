@@ -1,4 +1,4 @@
-#include "../include/ShkyeraTensor.hpp"
+#include "../include/ShkyeraGrad.hpp"
 
 int main() {
     using namespace shkyera;
