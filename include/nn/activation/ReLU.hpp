@@ -11,6 +11,10 @@
 
 namespace shkyera {
 
+template <typename T> class ReLU;
+using ReLU32 = ReLU<Type::float32>;
+using ReLU64 = ReLU<Type::float64>;
+
 template <typename T> class ReLU : public Activation<T> {
   public:
     static std::shared_ptr<ReLU<T>> create();

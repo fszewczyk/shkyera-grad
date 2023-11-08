@@ -11,6 +11,10 @@
 
 namespace shkyera {
 
+template <typename T> class Exp;
+using Exp32 = Exp<Type::float32>;
+using Exp64 = Exp<Type::float64>;
+
 template <typename T> class Exp : public Activation<T> {
   public:
     static std::shared_ptr<Exp<T>> create();

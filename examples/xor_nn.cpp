@@ -15,11 +15,11 @@ int main() {
 
     auto mlp = SequentialBuilder<Type::float32>::begin()
                 .add(Linear32::create(2, 15))
-                .add(ReLU<Type::float32>::create())
+                .add(ReLU32::create())
                 .add(Dropout32::create(15, 5, 0.2))
-                .add(ReLU<Type::float32>::create())
+                .add(ReLU32::create())
                 .add(Linear32::create(5, 1))
-                .add(Sigmoid<Type::float32>::create())
+                .add(Sigmoid32::create())
                 .build();
     // clang-format on
 

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "../../core/Type.hpp"
 #include "../Module.hpp"
 
 namespace shkyera {

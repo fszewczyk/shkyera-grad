@@ -11,6 +11,10 @@
 
 namespace shkyera {
 
+template <typename T> class Sigmoid;
+using Sigmoid32 = Sigmoid<Type::float32>;
+using Sigmoid64 = Sigmoid<Type::float64>;
+
 template <typename T> class Sigmoid : public Activation<T> {
   public:
     static std::shared_ptr<Sigmoid<T>> create();

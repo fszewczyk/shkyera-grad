@@ -11,6 +11,10 @@
 
 namespace shkyera {
 
+template <typename T> class Tanh;
+using Tanh32 = Tanh<Type::float32>;
+using Tanh64 = Tanh<Type::float64>;
+
 template <typename T> class Tanh : public Activation<T> {
   public:
     static std::shared_ptr<Tanh<T>> create();
