@@ -25,20 +25,26 @@
 var NAVTREE =
 [
   [ "Shkyera Grad", "index.html", [
-    [ "Cheatsheet", "md_docs_tutorials_Cheatsheet.html", null ],
-    [ "Get Started", "md_docs_tutorials_GetStarted.html", [
+    [ "Cheatsheet", "md_docs_tutorials_Cheatsheet.html", [
       [ "Usage", "index.html#autotoc_md0", null ],
-      [ "Setup", "md_docs_tutorials_GetStarted.html#autotoc_md3", null ],
-      [ "Scalars", "md_docs_tutorials_GetStarted.html#autotoc_md4", null ],
-      [ "Vector", "md_docs_tutorials_GetStarted.html#autotoc_md5", null ],
-      [ "Sequential", "md_docs_tutorials_GetStarted.html#autotoc_md6", null ],
-      [ "Training", "md_docs_tutorials_GetStarted.html#autotoc_md7", null ],
-      [ "Learning XOR", "md_docs_tutorials_GetStarted.html#autotoc_md8", [
-        [ "Let's define our dataset.", "md_docs_tutorials_GetStarted.html#autotoc_md9", null ],
-        [ "Neural Network", "md_docs_tutorials_GetStarted.html#autotoc_md10", null ],
-        [ "Training Loop", "md_docs_tutorials_GetStarted.html#autotoc_md11", null ],
-        [ "Verifying the results", "md_docs_tutorials_GetStarted.html#autotoc_md12", null ],
-        [ "Results", "md_docs_tutorials_GetStarted.html#autotoc_md13", null ]
+      [ "Types", "md_docs_tutorials_Cheatsheet.html#autotoc_md2", null ],
+      [ "Layers", "md_docs_tutorials_Cheatsheet.html#autotoc_md3", null ],
+      [ "Optimizers", "md_docs_tutorials_Cheatsheet.html#autotoc_md4", null ],
+      [ "Loss functions", "md_docs_tutorials_Cheatsheet.html#autotoc_md5", null ],
+      [ "Generic Training Loop", "md_docs_tutorials_Cheatsheet.html#autotoc_md6", null ]
+    ] ],
+    [ "Get Started", "md_docs_tutorials_GetStarted.html", [
+      [ "Setup", "md_docs_tutorials_GetStarted.html#autotoc_md8", null ],
+      [ "Scalars", "md_docs_tutorials_GetStarted.html#autotoc_md9", null ],
+      [ "Vector", "md_docs_tutorials_GetStarted.html#autotoc_md10", null ],
+      [ "Sequential", "md_docs_tutorials_GetStarted.html#autotoc_md11", null ],
+      [ "Training", "md_docs_tutorials_GetStarted.html#autotoc_md12", null ],
+      [ "Learning XOR", "md_docs_tutorials_GetStarted.html#autotoc_md13", [
+        [ "Let's define our dataset.", "md_docs_tutorials_GetStarted.html#autotoc_md14", null ],
+        [ "Neural Network", "md_docs_tutorials_GetStarted.html#autotoc_md15", null ],
+        [ "Training Loop", "md_docs_tutorials_GetStarted.html#autotoc_md16", null ],
+        [ "Verifying the results", "md_docs_tutorials_GetStarted.html#autotoc_md17", null ],
+        [ "Results", "md_docs_tutorials_GetStarted.html#autotoc_md18", null ]
       ] ]
     ] ]
   ] ]

@@ -89,8 +89,58 @@ $(document).ready(function(){initNavTree('md_docs_tutorials_Cheatsheet.html','')
 <div class="title">Cheatsheet </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This page contains all the info you need to develop your models using Shkyera Grad. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>This page contains all the info you need to develop your models using Shkyera Grad.</p>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Types</h1>
+<p>Almost all of the classes in <em>Shkyera Grad</em> are implemented using templates. To simplify creation of these objects, we introduced a standard way to instantiate objects with floating-point template parameters, i.e.</p>
+<div class="fragment"><div class="line">Linear32 = Linear&lt;float&gt;</div>
+<div class="line">Optimizer32 = Optimizer&lt;Type::float32&gt;&gt;</div>
+<div class="line">Loss::MSE64 = Loss::MSE&lt;double&gt;</div>
+<div class="line">Adam64 = Adam&lt;Type::f64&gt;</div>
+<div class="line"> </div>
+<div class="line">{Class}32 = {Class}&lt;Type::float32&gt; = {Class}&lt;<span class="keywordtype">float</span>&gt;</div>
+<div class="line">{Class}64 = {Class}&lt;Type::float64&gt; = {Class}&lt;<span class="keywordtype">double</span>&gt;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md3"></a>
+Layers</h1>
+<p>Here's a full list of available layers:</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> linear = Linear32::create(inputSize, outputSize);</div>
+<div class="line"><span class="keyword">auto</span> dropout = Dropout32::create(inputSize, outputSize, dropoutRate);</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
+Optimizers</h1>
+<p>These are all implemented optimizers:</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> simple = Optimizer32(network-&gt;parameters(), learningRate);</div>
+<div class="line"><span class="keyword">auto</span> sgdWithMomentum = SGD32(network-&gt;parameters(), learningRate, momentum = 0.9);</div>
+<div class="line"><span class="keyword">auto</span> adam = Adam32(network-&gt;parameters(), learningRate, beta1 = 0.9, beta2=0.999, epsilon=1e-8);</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
+Loss functions</h1>
+<p>Optimization can be performed according to these predefined loss functions:</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> L1 = Loss::MAE32;</div>
+<div class="line"><span class="keyword">auto</span> L2 = Loss::MSE32;</div>
+<div class="line"><span class="keyword">auto</span> crossEntropy = Loss::CrossEntropy32;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
+Generic Training Loop</h1>
+<p>Simply copy-pase this code to quickly train your network:</p>
+<div class="fragment"><div class="line"><span class="keyword">using</span> T = Type::float32; <span class="comment">// feel free to change it to float64</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> optimizer = Adam&lt;T&gt;(network-&gt;parameters(), 0.05);</div>
+<div class="line"><span class="keyword">auto</span> lossFunction = Loss::MSE&lt;T&gt;;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> epoch = 0; epoch &lt; 100; epoch++) {</div>
+<div class="line">    <span class="keyword">auto</span> epochLoss = Value&lt;T&gt;::create(0);</div>
+<div class="line"> </div>
+<div class="line">    optimizer.reset();</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample = 0; sample &lt; xs.size(); ++sample) {</div>
+<div class="line">        Vector&lt;T&gt; pred = network-&gt;forward(xs[sample]);</div>
+<div class="line">        <span class="keyword">auto</span> loss = lossFunction(pred, ys[sample]);</div>
+<div class="line"> </div>
+<div class="line">        epochLoss = epochLoss + loss;</div>
+<div class="line">    }</div>
+<div class="line">    optimizer.step();</div>
+<div class="line"> </div>
+<div class="line">    <span class="keyword">auto</span> averageLoss = epochLoss / Value&lt;T&gt;::create(xs.size());</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Epoch: &quot;</span> &lt;&lt; epoch + 1 &lt;&lt; <span class="stringliteral">&quot; Loss: &quot;</span> &lt;&lt; averageLoss-&gt;getValue() &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

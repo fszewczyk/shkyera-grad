@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('md_docs_tutorials_GetStarted.html','')
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Hello! Let's get right into it. By the end of this guide, you will have created and trained your first neural in <em>Shkyera Grad</em>!</p>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Setup</h1>
 <p>This is easy, <em>Shkyera Grad</em> is a header-only library, so simply clone the repositoryu into your project:</p>
 <div class="fragment"><div class="line">git clone https://github.com/fszewczyk/shkyera-grad.git</div>
@@ -98,7 +98,7 @@ Setup</h1>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;shkyera-grad/include/ShkyeraGrad.hpp&quot;</span></div>
 </div><!-- fragment --><p>Now, you can use all the features of this small engine.</p>
 <dl class="section note"><dt>Note</dt><dd><em>Shkyera Grad</em> is tested in C++17. Make sure your compiler supports this version.</dd></dl>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Scalars</h1>
 <p>Internally, <em>Shkyera Grad</em> <b>always</b> operates on individual scalars. For most purposes, you do not need to deal with them directly, but it's nice to understand how they work. Each scalar is wrapped inside a <code>Value</code> class. However, you should never instantiate objects of this type yourself. Instead, you should use the provided interface in the following way.</p>
 <div class="fragment"><div class="line"><span class="comment">// Creates a floating-point scalar</span></div>
@@ -138,7 +138,7 @@ Scalars</h1>
 <div class="line">a-&gt;getGradient();               <span class="comment">// dc/da = 3.0</span></div>
 <div class="line">b-&gt;getGradient();               <span class="comment">// dc/db = 2.0</span></div>
 </div><!-- fragment --><p>If you want some refreshment on derivatives, check out <a href="https://www.youtube.com/watch?v=9vKqVkMQHKk">this wonderful video</a>.</p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Vector</h1>
 <p>Multiple scalars can be grouped together in a <code>Vector</code> to simplify operating on them. Input to any <code>Module</code> (more on them later) is a <code>Vector</code>. This abstraction provides some functionality that allows you to compute, for example a dot product.</p>
 <div class="fragment"><div class="line"><span class="comment">// The easiest way to create a Vector</span></div>
@@ -157,7 +157,7 @@ Vector</h1>
 <div class="line"><span class="keyword">auto</span> d = a.dot(b)       <span class="comment">// c = 1 * 2 + 2 * 3 + 3 * 4 = 20</span></div>
 <div class="line">d-&gt;backward();          <span class="comment">// You can compute of this result since it&#39;s a scalar!</span></div>
 </div><!-- fragment --><p><code>Vectors</code> are very useful since this is the way both the input and output data is represented. Each sample consits of an input <code>Vector</code> and a target output <code>Vector</code>.</p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Sequential</h1>
 <p>Nice! You got the basics! Let's build a network. The best way to create a model is through the use of the <code>Sequential</code> interface. Each function that transforms an input <code>Vector</code> into some output <code>Vector</code> is implemented as a <code>Module</code>. This includes neural layers as well as activation functions. Hey, even <code>Sequential</code> is a <code>Module</code>. This allows for creating complex strctures while using a common, simple interface.</p>
 <p>You can create your first neural network using <code>SequentialBuilder</code> in the following way.</p>
@@ -170,7 +170,7 @@ Sequential</h1>
 <div class="line">               .build();                            <span class="comment">// Don&#39;t forget to actually build your network</span></div>
 </div><!-- fragment --><p>@warn Remember that subsequent layers have to have matching input and output sizes.</p>
 <dl class="section note"><dt>Note</dt><dd>For the full list of available layers and activation functions, check out the Cheat Sheet.</dd></dl>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Training</h1>
 <p>To train our network, we need to define an <code>Optimizer</code> that will optimizer the parameters as well as the <code>Loss</code> function that we will minimize. <em>Shkyera Grad</em> comes with a set of well-known optimizers and loss functions. Again, check out the Cheat Sheet for a complete list.</p>
 <div class="fragment"><div class="line"><span class="comment">// Simple stochastic gradient descent optimizer with 0.01 learning rate</span></div>
@@ -192,7 +192,7 @@ Training</h1>
 <div class="line">Loss::MSE&lt;T&gt;            <span class="comment">// Mean Squared Error</span></div>
 <div class="line">Loss::CrossEntropy&lt;T&gt;   <span class="comment">// Cross Entropy Loss - good for classification</span></div>
 </div><!-- fragment --><p>They are implemented as lambda functions, not as objects, so they do not need to be instantiated.</p>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Learning XOR</h1>
 <p>XOR (Exclusive OR) is a simple Boolean function that maps two values two one:</p>
 <table class="markdownTable">
@@ -207,7 +207,7 @@ Learning XOR</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">0   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Let's define our dataset.</h2>
 <p>Here, we basically pase the table above into <code>Vector</code>s.</p>
 <div class="fragment"><div class="line">std::vector&lt;Vec32&gt; xs;</div>
@@ -218,7 +218,7 @@ Let's define our dataset.</h2>
 <div class="line">xs.push_back(Vec32::of({1, 0})); ys.push_back(Vec32::of({1}));</div>
 <div class="line">xs.push_back(Vec32::of({0, 1})); ys.push_back(Vec32::of({1}));</div>
 <div class="line">xs.push_back(Vec32::of({1, 1})); ys.push_back(Vec32::of({0}));</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
 Neural Network</h2>
 <p>We define a simple neural network to predict this function. Our network has a total of three layers. It is a bit of an overkill for this task, but we will use it for learning purposes.</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> network = SequentialBuilder&lt;Type::float32&gt;::begin()</div>
@@ -229,7 +229,7 @@ Neural Network</h2>
 <div class="line">                .add(Linear32::create(5, 1))</div>
 <div class="line">                .add(Sigmoid32::create())</div>
 <div class="line">                .build();</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
 Training Loop</h2>
 <p>Now, we just need to specify the optimizer and the loss function we want to use:</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> optimizer = Adam32(network-&gt;parameters(), 0.05);</div>
@@ -250,7 +250,7 @@ Training Loop</h2>
 <div class="line">    <span class="keyword">auto</span> averageLoss = epochLoss / Val32::create(xs.size());</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Epoch: &quot;</span> &lt;&lt; epoch + 1 &lt;&lt; <span class="stringliteral">&quot; Loss: &quot;</span> &lt;&lt; averageLoss-&gt;getValue() &lt;&lt; std::endl;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
 Verifying the results</h2>
 <p>After the training, let's inspect how our network behaves.</p>
 <div class="fragment"><div class="line"><span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample = 0; sample &lt; xs.size(); ++sample) {         <span class="comment">// Go through each example</span></div>
@@ -258,7 +258,7 @@ Verifying the results</h2>
 <div class="line">    std::cout &lt;&lt; xs[sample] &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; pred &lt;&lt; <span class="stringliteral">&quot;\t| True: &quot;</span> &lt;&lt; ys[sample] &lt;&lt; std::endl;</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>In case you got lost along the way, check out the <code>examples/xor_regression.cpp</code> file. It contains the exact same code and is ready to run :)</p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Results</h2>
 <p>Nice! After compiling and running this code (make sure to use C++17), you should see something like this:</p>
 <div class="fragment"><div class="line">Epoch: 1 Loss: 0.263062</div>
