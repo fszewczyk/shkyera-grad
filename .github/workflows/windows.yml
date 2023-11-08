@@ -24,15 +24,10 @@ jobs:
         env:
           CXX: ${{matrix.conf.compiler}}
         run: |
-          g++ include/ShkyeraTensor.hpp --std=c++20
+          g++ include/ShkyeraTensor.hpp --std=c++17
       - name: Build examples
         env:
           CXX: ${{matrix.conf.compiler}}
         run: |
-          g++ examples/algebra.cpp --std=c++20
-          g++ examples/dataset.cpp --std=c++20
-      - name: Test
-        env:
-          CXX: ${{matrix.conf.compiler}}
-        run: |
-          g++ tests/mainTest.cpp --std=c++20 -o out.exe
+          g++ examples/scalars.cpp --std=c++17
+          g++ examples/xor_nn.cpp --std=c++17

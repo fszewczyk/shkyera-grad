@@ -7,11 +7,13 @@
 
 #pragma once
 
-namespace shkyera::Type {
-
-using float32 = float;
-using float64 = double;
-using f32 = float;
-using f64 = double;
-
-} // namespace shkyera::Type
+#include "src/core/Type.hpp"
+#include "src/core/Value.hpp"
+#include "src/core/Vector.hpp"
+#include "src/nn/Activation.hpp"
+#include "src/nn/Layer.hpp"
+#include "src/nn/Loss.hpp"
+#include "src/nn/Module.hpp"
+#include "src/nn/Neuron.hpp"
+#include "src/nn/Optimizer.hpp"
+#include "src/nn/Sequential.hpp"

@@ -1,3 +1,10 @@
+/**
+ * Copyright © 2023 Franciszek Szewczyk. None of the rights reserved.
+ * This code is released under the Beerware License. If you find this code useful or you appreciate the work, you are
+ * encouraged to buy the author a beer in return.
+ * Contact the author at szewczyk.franciszek02@gmail.com for inquiries and support.
+ */
+
 #pragma once
 
 #include <cmath>
@@ -35,6 +42,7 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     static ValuePtr<T> create(T data);
 
     void backward();
+    T getValue();
     T getGradient();
 
     ValuePtr<T> tanh();
@@ -49,12 +57,21 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     template <typename U> friend ValuePtr<U> operator/(ValuePtr<U> a, ValuePtr<U> b);
     template <typename U> friend ValuePtr<U> operator-(ValuePtr<U> a);
 
+    template <typename U> friend bool operator>(ValuePtr<U> a, ValuePtr<U> b);
+    template <typename U> friend bool operator>=(ValuePtr<U> a, ValuePtr<U> b);
+    template <typename U> friend bool operator<(ValuePtr<U> a, ValuePtr<U> b);
+    template <typename U> friend bool operator<=(ValuePtr<U> a, ValuePtr<U> b);
+    template <typename U> friend bool operator==(ValuePtr<U> a, ValuePtr<U> b);
+    template <typename U> friend bool operator!=(ValuePtr<U> a, ValuePtr<U> b);
+
     template <typename U> friend std::ostream &operator<<(std::ostream &os, const ValuePtr<U> &value);
 };
 
 template <typename T> Value<T>::Value(T data) : _data(data) {}
 
 template <typename T> ValuePtr<T> Value<T>::create(T data) { return std::shared_ptr<Value<T>>(new Value<T>(data)); }
+
+template <typename T> T Value<T>::getValue() { return _data; }
 
 template <typename T> T Value<T>::getGradient() { return _gradient; }
 
@@ -85,6 +102,13 @@ template <typename T> ValuePtr<T> operator*(ValuePtr<T> a, ValuePtr<T> b) {
 template <typename T> ValuePtr<T> operator/(ValuePtr<T> a, ValuePtr<T> b) { return a * (b->pow(Value<T>::create(-1))); }
 
 template <typename T> ValuePtr<T> operator-(ValuePtr<T> a) { return Value<T>::create(-1) * a; }
+
+template <typename T> bool operator<(ValuePtr<T> a, ValuePtr<T> b) { return a->getValue() < b->getValue(); }
+template <typename T> bool operator<=(ValuePtr<T> a, ValuePtr<T> b) { return a->getValue() <= b->getValue(); }
+template <typename T> bool operator>(ValuePtr<T> a, ValuePtr<T> b) { return a->getValue() > b->getValue(); }
+template <typename T> bool operator>=(ValuePtr<T> a, ValuePtr<T> b) { return a->getValue() >= b->getValue(); }
+template <typename T> bool operator==(ValuePtr<T> a, ValuePtr<T> b) { return a->getValue() == b->getValue(); }
+template <typename T> bool operator!=(ValuePtr<T> a, ValuePtr<T> b) { return a->getValue() != b->getValue(); }
 
 template <typename T> ValuePtr<T> Value<T>::tanh() {
     auto thisValue = this->shared_from_this();
