@@ -50,6 +50,7 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     ValuePtr<T> relu();
     ValuePtr<T> sigmoid();
     ValuePtr<T> exp();
+    ValuePtr<T> log();
     ValuePtr<T> pow(ValuePtr<T> exponent);
 
     template <typename U> friend ValuePtr<U> operator+(ValuePtr<U> a, ValuePtr<U> b);
@@ -157,6 +158,16 @@ template <typename T> ValuePtr<T> Value<T>::exp() {
     return result;
 }
 
+template <typename T> ValuePtr<T> Value<T>::log() {
+    auto thisValue = this->shared_from_this();
+
+    ValuePtr<T> result = Value<T>::create(std::log(_data));
+    result->_children = {thisValue};
+    result->_backward = [thisValue, result]() { thisValue->_gradient += (1 / thisValue->_data) * result->_gradient; };
+
+    return result;
+}
+
 template <typename T> ValuePtr<T> Value<T>::pow(ValuePtr<T> exponent) {
     auto thisValue = this->shared_from_this();
 
@@ -165,7 +176,7 @@ template <typename T> ValuePtr<T> Value<T>::pow(ValuePtr<T> exponent) {
     result->_backward = [thisValue, exponent, result]() {
         thisValue->_gradient += (exponent->_data * std::pow(thisValue->_data, exponent->_data - 1)) * result->_gradient;
         exponent->_gradient +=
-            (std::pow(thisValue->_data, exponent->_data) * log(thisValue->_data)) * result->_gradient;
+            (std::pow(thisValue->_data, exponent->_data) * std::log(thisValue->_data)) * result->_gradient;
     };
 
     return result;

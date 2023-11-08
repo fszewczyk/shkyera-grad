@@ -21,6 +21,7 @@
 #include "nn/activation/Exp.hpp"
 #include "nn/activation/ReLU.hpp"
 #include "nn/activation/Sigmoid.hpp"
+#include "nn/activation/Softmax.hpp"
 #include "nn/activation/Tanh.hpp"
 
 #include "nn/layers/Dropout.hpp"

@@ -26,9 +26,13 @@ jobs:
         run: |
           g++ include/ShkyeraGrad.hpp --std=c++17
 
-      - name: Build examples
+      - name: Build and run examples
         env:
           CXX: ${{matrix.conf.compiler}}
         run: |
-          g++ examples/scalars.cpp --std=c++17
-          g++ examples/xor_nn.cpp --std=c++17
+          g++ examples/scalars.cpp -O3 --std=c++17
+          ./a.out
+          g++ examples/xor_classification.cpp -O3 --std=c++17
+          ./a.out
+          g++ examples/xor_regression.cpp -O3 --std=c++17
+          ./a.out

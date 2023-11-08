@@ -45,15 +45,16 @@ template <typename T> DropoutPtr<T> Dropout<T>::create(size_t input, size_t size
 template <typename T> Vector<T> Dropout<T>::operator()(const Vector<T> &x) const {
     std::vector<ValuePtr<T>> alteredInput;
     alteredInput.reserve(x.size());
-    auto scaling = Value<T>::create(1.0 / (1 - _dropout));
     for (size_t i = 0; i < x.size(); ++i)
-        alteredInput.push_back(x[i] * scaling);
+        alteredInput.push_back(x[i]);
 
     std::vector<size_t> indicesToRemove = utils::sample<size_t>(0, x.size() - 1, _dropout * x.size(), false);
     for (size_t idxToRemove : indicesToRemove)
         alteredInput[idxToRemove] = Value<T>::create(0);
 
-    return Linear<T>::operator()(Vector<T>(alteredInput));
+    auto transformedInput = Vector<T>(alteredInput) * static_cast<T>(1.0 / (1 - _dropout));
+
+    return Linear<T>::operator()(transformedInput);
 }
 
 } // namespace shkyera
