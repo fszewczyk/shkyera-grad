@@ -30,8 +30,8 @@ template <typename T> Vector<T> Sigmoid<T>::operator()(const Vector<T> &x) const
     std::vector<ValuePtr<T>> out;
     out.reserve(x.size());
 
-    for (size_t i = 0; i < x.size(); ++i) {
-        out.emplace_back(x[i]->sigmoid());
+    for (auto entry : x) {
+        out.emplace_back(entry->sigmoid());
     }
 
     return Vector<T>(out);
