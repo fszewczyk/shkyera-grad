@@ -39,7 +39,7 @@ int main() {
     xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));
     xs.push_back(Vec32::of({1, 0})); ys.push_back(Vec32::of({1}));
     xs.push_back(Vec32::of({0, 1})); ys.push_back(Vec32::of({1}));
-    xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));
+    xs.push_back(Vec32::of({1, 1})); ys.push_back(Vec32::of({0}));
 
     auto mlp = SequentialBuilder<Type::float32>::begin()
                 .add(Linear32::create(2, 15))
