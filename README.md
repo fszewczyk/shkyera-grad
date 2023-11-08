@@ -3,7 +3,7 @@
 <h1>Shkyera Grad</h1>
 
 <i>
- micrograd, but in C++ and with more functionality.
+ micrograd, but in C++ and better.
 </i>
 <p></p>
 
