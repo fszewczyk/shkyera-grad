@@ -7,44 +7,43 @@
 
 #pragma once
 
-#include "../core/Type.hpp"
-#include "Activation.hpp"
-#include "Module.hpp"
-#include "Neuron.hpp"
+#include "../../core/Type.hpp"
+#include "../Module.hpp"
+#include "../Neuron.hpp"
 
 namespace shkyera {
 
-template <typename T> class Layer;
-template <typename T> using LayerPtr = std::shared_ptr<Layer<T>>;
+template <typename T> class Linear;
+template <typename T> using LinearPtr = std::shared_ptr<Linear<T>>;
 
-using Layer32 = Layer<Type::float32>;
-using Layer64 = Layer<Type::float32>;
+using Linear32 = Linear<Type::float32>;
+using Linear64 = Linear<Type::float64>;
 
-template <typename T> class Layer : public Module<T> {
-  private:
+template <typename T> class Linear : public Module<T> {
+  protected:
     std::vector<Neuron<T>> _neurons;
 
-    Layer(size_t input, size_t size, Activation::Function<T> activation = Activation::relu<T>);
+    Linear(size_t input, size_t size);
 
   public:
-    static LayerPtr<T> create(size_t input, size_t size, Activation::Function<T> activation = Activation::relu<T>);
+    static LinearPtr<T> create(size_t input, size_t size);
 
     virtual Vector<T> operator()(const Vector<T> &x) const override;
     virtual std::vector<ValuePtr<T>> parameters() const override;
 };
 
-template <typename T> Layer<T>::Layer(size_t input, size_t size, Activation::Function<T> activation) {
+template <typename T> Linear<T>::Linear(size_t input, size_t size) {
     _neurons.reserve(size);
     for (size_t i = 0; i < size; ++i) {
-        _neurons.emplace_back(Neuron<T>(input, activation));
+        _neurons.emplace_back(Neuron<T>(input));
     }
 }
 
-template <typename T> LayerPtr<T> Layer<T>::create(size_t input, size_t size, Activation::Function<T> activation) {
-    return std::shared_ptr<Layer<T>>(new Layer<T>(input, size, activation));
+template <typename T> LinearPtr<T> Linear<T>::create(size_t input, size_t size) {
+    return std::shared_ptr<Linear<T>>(new Linear<T>(input, size));
 }
 
-template <typename T> Vector<T> Layer<T>::operator()(const Vector<T> &x) const {
+template <typename T> Vector<T> Linear<T>::operator()(const Vector<T> &x) const {
     std::vector<ValuePtr<T>> output(_neurons.size());
 
     for (size_t i = 0; i < _neurons.size(); i++) {
@@ -54,7 +53,7 @@ template <typename T> Vector<T> Layer<T>::operator()(const Vector<T> &x) const {
     return Vector<T>(output);
 }
 
-template <typename T> std::vector<ValuePtr<T>> Layer<T>::parameters() const {
+template <typename T> std::vector<ValuePtr<T>> Linear<T>::parameters() const {
     std::vector<ValuePtr<T>> params;
     for (const Neuron<T> &n : _neurons) {
         std::vector<ValuePtr<T>> neuronParams = n.parameters();

@@ -23,11 +23,9 @@ template <typename T> class Neuron {
   private:
     ValuePtr<T> _bias;
     Vector<T> _weights;
-    std::function<ValuePtr<T>(ValuePtr<T>)> _activation = [](ValuePtr<T> a) { return a; };
 
   public:
     Neuron(size_t input);
-    Neuron(size_t input, std::function<ValuePtr<T>(ValuePtr<T>)> activation);
 
     Vector<T> operator()(const Vector<T> &x) const;
     std::vector<ValuePtr<T>> parameters() const;
@@ -40,13 +38,8 @@ template <typename T> Neuron<T>::Neuron(size_t input) {
     _bias = Value<T>::create(utils::sample<T>(-1, 1));
 }
 
-template <typename T>
-Neuron<T>::Neuron(size_t input, std::function<ValuePtr<T>(ValuePtr<T>)> activation) : Neuron<T>(input) {
-    _activation = activation;
-}
-
 template <typename T> Vector<T> Neuron<T>::operator()(const Vector<T> &x) const {
-    return Vector<T>({_activation(_bias + _weights.dot(x))});
+    return Vector<T>({_bias + _weights.dot(x)});
 }
 
 template <typename T> std::vector<ValuePtr<T>> Neuron<T>::parameters() const {

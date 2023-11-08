@@ -7,13 +7,21 @@
 
 #pragma once
 
-#include "src/core/Type.hpp"
-#include "src/core/Value.hpp"
-#include "src/core/Vector.hpp"
-#include "src/nn/Activation.hpp"
-#include "src/nn/Layer.hpp"
-#include "src/nn/Loss.hpp"
-#include "src/nn/Module.hpp"
-#include "src/nn/Neuron.hpp"
-#include "src/nn/Optimizer.hpp"
-#include "src/nn/Sequential.hpp"
+#include "core/Type.hpp"
+#include "core/Value.hpp"
+#include "core/Vector.hpp"
+
+#include "nn/Loss.hpp"
+#include "nn/Module.hpp"
+#include "nn/Neuron.hpp"
+#include "nn/Optimizer.hpp"
+#include "nn/Sequential.hpp"
+
+#include "nn/activation/Activation.hpp"
+#include "nn/activation/Exp.hpp"
+#include "nn/activation/ReLU.hpp"
+#include "nn/activation/Sigmoid.hpp"
+#include "nn/activation/Tanh.hpp"
+
+#include "nn/layers/Dropout.hpp"
+#include "nn/layers/Linear.hpp"
