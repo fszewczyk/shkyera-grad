@@ -1,11 +1,15 @@
 <div align="center">
  
 <h1>Shkyera Grad</h1>
-<i>micrograd, but in C++ and with more functionality.</i>
+<i>
+ micrograd, but in C++ and with more functionality.
+</i>
+<p></p>
 
 </div>
 
-This is a small header-only library of a scalar-valued autograd based on [Andrej Karpathy's micrograd](https://github.com/karpathy/micrograd). It provides a high-level, PyTorch-like API for creating simple neural networks.
+
+This is a small header-only library of a scalar-valued autograd based on [Andrej Karpathy's micrograd](https://github.com/karpathy/micrograd). It provides a high-level, PyTorch-like API for creating and training simple neural networks.
 
 ## Usage
 
