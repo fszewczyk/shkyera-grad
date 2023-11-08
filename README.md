@@ -3,14 +3,14 @@
 <h1>Shkyera Grad</h1>
 
 <i>
- micrograd, but in C++ and better.
+micrograd, but in C++ and better.
 </i>
 <p></p>
 
-![LinuxBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/linux.yml/badge.svg) 
-![MacOSBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/macos.yml/badge.svg) 
-![WindowsBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg) 
-![LICENSE](https://img.shields.io/badge/license-Beerware-yellow)
+[![LinuxBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/linux.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/linux.yml)
+[![MacOSBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/macos.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/macos.yml)
+[![WindowsBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml)
+[![LICENSE](https://img.shields.io/badge/license-Beerware-yellow)](https://github.com/fszewczyk/shkyera-grad/blob/master/LICENSE)
 
 </div>
 
