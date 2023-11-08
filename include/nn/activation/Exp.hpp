@@ -28,9 +28,8 @@ template <typename T> Vector<T> Exp<T>::operator()(const Vector<T> &x) const {
     std::vector<ValuePtr<T>> out;
     out.reserve(x.size());
 
-    for (size_t i = 0; i < x.size(); ++i) {
-        out.emplace_back(x[i]->exp());
-    }
+    for (auto &entry : x)
+        out.emplace_back(entry->exp());
 
     return Vector<T>(out);
 }

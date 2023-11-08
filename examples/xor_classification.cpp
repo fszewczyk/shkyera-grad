@@ -27,7 +27,7 @@ int main() {
     Loss::Function32 lossFunction = Loss::CrossEntropy<Type::float32>;
 
     // ------ TRAINING THE NETWORK ------- //
-    for (size_t epoch = 0; epoch < 200; epoch++) {
+    for (size_t epoch = 0; epoch < 100; epoch++) {
         auto epochLoss = Val32::create(0);
 
         optimizer.reset();

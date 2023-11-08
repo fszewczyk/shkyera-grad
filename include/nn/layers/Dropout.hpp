@@ -45,8 +45,8 @@ template <typename T> DropoutPtr<T> Dropout<T>::create(size_t input, size_t size
 template <typename T> Vector<T> Dropout<T>::operator()(const Vector<T> &x) const {
     std::vector<ValuePtr<T>> alteredInput;
     alteredInput.reserve(x.size());
-    for (size_t i = 0; i < x.size(); ++i)
-        alteredInput.push_back(x[i]);
+    for (const ValuePtr<T> &val : x)
+        alteredInput.push_back(val);
 
     std::vector<size_t> indicesToRemove = utils::sample<size_t>(0, x.size() - 1, _dropout * x.size(), false);
     for (size_t idxToRemove : indicesToRemove)

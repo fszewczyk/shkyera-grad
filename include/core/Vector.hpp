@@ -15,6 +15,7 @@
 namespace shkyera {
 
 template <typename T> class Vector;
+
 using Vec32 = Vector<Type::float32>;
 using Vec64 = Vector<Type::float64>;
 
@@ -43,6 +44,21 @@ template <typename T> class Vector {
     Vector<T> &operator*=(ValuePtr<T> val);
 
     ValuePtr<T> operator[](size_t index) const;
+
+    class ConstIterator {
+      private:
+        size_t _index;
+        const Vector<T> &_vector;
+
+      public:
+        ConstIterator(size_t index, const Vector<T> &vector);
+        const ValuePtr<T> operator*();
+        ConstIterator &operator++();
+        bool operator!=(const ConstIterator &other);
+    };
+
+    ConstIterator begin() const;
+    ConstIterator end() const;
 };
 
 template <typename T> Vector<T>::Vector(std::vector<ValuePtr<T>> values) { _values = values; }
@@ -134,11 +150,34 @@ template <typename T> ValuePtr<T> Vector<T>::operator[](size_t index) const { re
 template <typename T> std::ostream &operator<<(std::ostream &os, const Vector<T> &vector) {
     os << "Vector(size=" << vector.size() << ", data={";
 
-    for (const ValuePtr<T> val : vector._values)
+    for (auto val : vector)
         os << val << ' ';
 
     os << "})";
     return os;
+}
+
+template <typename T> typename Vector<T>::ConstIterator Vector<T>::begin() const { return ConstIterator(0, *this); }
+template <typename T> typename Vector<T>::ConstIterator Vector<T>::end() const { return ConstIterator(size(), *this); }
+
+template <typename T>
+Vector<T>::ConstIterator::ConstIterator(size_t index, const Vector<T> &vector) : _index(index), _vector(vector) {}
+
+template <typename T> const ValuePtr<T> Vector<T>::ConstIterator::operator*() {
+    if (_index < _vector.size()) {
+        return _vector[_index];
+    }
+    throw std::out_of_range("Vector iterator out of range. Tried to access index " + std::to_string(_index) +
+                            " in a Vector of size " + std::to_string(_vector.size()) + ".");
+}
+
+template <typename T> typename Vector<T>::ConstIterator &Vector<T>::ConstIterator::operator++() {
+    ++_index;
+    return *this;
+}
+
+template <typename T> bool Vector<T>::ConstIterator::operator!=(const ConstIterator &other) {
+    return _index != other._index;
 }
 
 } // namespace shkyera

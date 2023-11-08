@@ -31,13 +31,13 @@ template <typename T> Vector<T> Softmax<T>::operator()(const Vector<T> &x) const
     out.reserve(x.size());
 
     auto maxValue = Value<T>::create(x[0]->getValue());
-    for (size_t i = 1; i < x.size(); ++i)
-        if (x[i] > maxValue)
-            maxValue = x[i];
+    for (auto &entry : x)
+        if (entry > maxValue)
+            maxValue = entry;
 
     auto sumExponentiated = Value<T>::create(0);
-    for (size_t i = 0; i < x.size(); ++i) {
-        auto exponentiated = (x[i] - maxValue)->exp();
+    for (auto &entry : x) {
+        auto exponentiated = (entry - maxValue)->exp();
         out.emplace_back(exponentiated);
         sumExponentiated = sumExponentiated + exponentiated;
     }
