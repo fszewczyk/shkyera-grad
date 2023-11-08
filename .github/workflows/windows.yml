@@ -24,7 +24,7 @@ jobs:
         env:
           CXX: ${{matrix.conf.compiler}}
         run: |
-          g++ include/ShkyeraTensor.hpp --std=c++17
+          g++ include/ShkyeraGrad.hpp --std=c++17
       - name: Build examples
         env:
           CXX: ${{matrix.conf.compiler}}
