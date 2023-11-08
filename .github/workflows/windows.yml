@@ -29,9 +29,9 @@ jobs:
         env:
           CXX: ${{matrix.conf.compiler}}
         run: |
-          g++ examples/scalars.cpp -O3 --std=c++17 -o out.exe
+          g++ examples/scalars.cpp -O3 --std=c++17 -o out
           out.exe
-          g++ examples/xor_classification.cpp -O3 --std=c++17 -o out.exe
+          g++ examples/xor_classification.cpp -O3 --std=c++17 -o out
           out.exe
-          g++ examples/xor_regression.cpp -O3 --std=c++17 -o out.exe
+          g++ examples/xor_regression.cpp -O3 --std=c++17 -o out
           out.exe
