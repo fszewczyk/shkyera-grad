@@ -31,7 +31,7 @@ jobs:
         run: |
           g++ examples/scalars.cpp -O3 --std=c++17 -o out.exe
           out.exe
-          g++ examples/xor_classification.cpp --std=c++17 -o out.exe
+          g++ examples/xor_classification.cpp -O3 --std=c++17 -o out.exe
           out.exe
-          g++ examples/xor_regression.cpp --std=c++17 -o out.exe
+          g++ examples/xor_regression.cpp -O3 --std=c++17 -o out.exe
           out.exe
