@@ -57,4 +57,32 @@ Function<T> MAE = [](Vector<T> a, Vector<T> b) {
     return loss;
 };
 
+template <typename T>
+Function<T> CrossEntropy = [](Vector<T> a, Vector<T> b) {
+    if (a.size() != b.size()) {
+        throw std::invalid_argument(
+            "Vectors need to be of the same size to compute the Cross Entropy loss. Sizes are " +
+            std::to_string(a.size()) + " and " + std::to_string(b.size()) + ".");
+    }
+
+    auto aSum = a.sum();
+    auto bSum = b.sum();
+
+    if (aSum->getValue() < 0.99 || aSum->getValue() > 1.01 || aSum->getValue() < 0.99 || aSum->getValue() > 1.01) {
+        throw std::invalid_argument("To compute Cross Entropy Loss, both elements of each vector need to sum to 1(+/- "
+                                    "0.01). Currently, they sum to:" +
+                                    std::to_string(aSum->getValue()) + " and " + std::to_string(bSum->getValue()) +
+                                    ".");
+    }
+
+    auto loss = Value<T>::create(0);
+    for (size_t i = 0; i < a.size(); ++i) {
+        loss = loss - (b[i] * (a[i]->log()));
+    }
+
+    loss->backward();
+
+    return loss;
+};
+
 } // namespace shkyera::Loss

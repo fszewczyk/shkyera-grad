@@ -25,14 +25,24 @@ template <typename T> class Vector {
   public:
     Vector() = default;
     Vector(std::vector<ValuePtr<T>> values);
+
     static Vector<T> of(const std::vector<T> &values);
-
     ValuePtr<T> dot(const Vector<T> &other) const;
-    ValuePtr<T> operator[](size_t index) const;
-
+    ValuePtr<T> sum() const;
     size_t size() const;
 
     template <typename U> friend std::ostream &operator<<(std::ostream &os, const Vector<U> &vector);
+
+    template <typename U> friend Vector<U> operator/(Vector<U> x, U val);
+    template <typename U> friend Vector<U> operator*(Vector<U> x, U val);
+    template <typename U> friend Vector<U> operator/(Vector<U> x, ValuePtr<U> val);
+    template <typename U> friend Vector<U> operator*(Vector<U> x, ValuePtr<U> val);
+    Vector<T> &operator/=(T val);
+    Vector<T> &operator*=(T val);
+    Vector<T> &operator/=(ValuePtr<T> val);
+    Vector<T> &operator*=(ValuePtr<T> val);
+
+    ValuePtr<T> operator[](size_t index) const;
 };
 
 template <typename T> Vector<T>::Vector(std::vector<ValuePtr<T>> values) { _values = values; }
@@ -60,6 +70,63 @@ template <typename T> ValuePtr<T> Vector<T>::dot(const Vector<T> &other) const {
         result = result + (_values[i] * other[i]);
 
     return result;
+}
+
+template <typename T> ValuePtr<T> Vector<T>::sum() const {
+    auto sum = Value<T>::create(0);
+    for (const auto &entry : _values)
+        sum = sum + entry;
+    return sum;
+}
+
+template <typename T> Vector<T> operator/(Vector<T> x, T val) {
+    x /= val;
+    return x;
+}
+
+template <typename T> Vector<T> operator*(Vector<T> x, T val) {
+    x *= val;
+    return x;
+}
+
+template <typename T> Vector<T> operator/(Vector<T> x, ValuePtr<T> val) {
+    auto out = x;
+    for (size_t i = 0; i < out._values.size(); ++i)
+        out._values[i] = out._values[i] / val;
+    return out;
+}
+
+template <typename T> Vector<T> operator*(Vector<T> x, ValuePtr<T> val) {
+    auto out = x;
+    for (size_t i = 0; i < out._values.size(); ++i)
+        out._values[i] = out._values[i] * val;
+    return out;
+}
+
+template <typename T> Vector<T> &Vector<T>::operator/=(T val) {
+    auto divisor = Value<T>::create(val);
+    for (size_t i = 0; i < _values.size(); ++i)
+        _values[i] = _values[i] / divisor;
+    return *this;
+}
+
+template <typename T> Vector<T> &Vector<T>::operator*=(T val) {
+    auto divisor = Value<T>::create(val);
+    for (size_t i = 0; i < _values.size(); ++i)
+        _values[i] = _values[i] * divisor;
+    return *this;
+}
+
+template <typename T> Vector<T> &Vector<T>::operator/=(ValuePtr<T> val) {
+    for (size_t i = 0; i < _values.size(); ++i)
+        _values[i] = _values[i] / val;
+    return *this;
+}
+
+template <typename T> Vector<T> &Vector<T>::operator*=(ValuePtr<T> val) {
+    for (size_t i = 0; i < _values.size(); ++i)
+        _values[i] = _values[i] * val;
+    return *this;
 }
 
 template <typename T> ValuePtr<T> Vector<T>::operator[](size_t index) const { return _values[index]; }
