@@ -18,6 +18,7 @@
 
 #include "nn/optimizers/Adam.hpp"
 #include "nn/optimizers/Optimizer.hpp"
+#include "nn/optimizers/SGD.hpp"
 
 #include "nn/activation/Activation.hpp"
 #include "nn/activation/Exp.hpp"

@@ -20,6 +20,7 @@ namespace shkyera {
 
 template <typename T> class Optimizer;
 template <typename T> class Adam;
+template <typename T> class SGD;
 
 template <typename T> class Value;
 template <typename T> using ValuePtr = std::shared_ptr<Value<T>>;
@@ -42,6 +43,7 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
   public:
     friend class Optimizer<T>;
     friend class Adam<T>;
+    friend class SGD<T>;
 
     static ValuePtr<T> create(T data);
 
