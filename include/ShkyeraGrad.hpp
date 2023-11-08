@@ -14,8 +14,10 @@
 #include "nn/Loss.hpp"
 #include "nn/Module.hpp"
 #include "nn/Neuron.hpp"
-#include "nn/Optimizer.hpp"
 #include "nn/Sequential.hpp"
+
+#include "nn/optimizers/Adam.hpp"
+#include "nn/optimizers/Optimizer.hpp"
 
 #include "nn/activation/Activation.hpp"
 #include "nn/activation/Exp.hpp"

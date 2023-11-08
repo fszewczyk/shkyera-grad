@@ -9,9 +9,9 @@
 
 #include <vector>
 
-#include "../core/Type.hpp"
-#include "../core/Value.hpp"
-#include "Module.hpp"
+#include "../../core/Type.hpp"
+#include "../../core/Value.hpp"
+#include "../Module.hpp"
 
 namespace shkyera {
 
@@ -19,15 +19,15 @@ using Optimizer32 = Optimizer<Type::float32>;
 using Optimizer64 = Optimizer<Type::float32>;
 
 template <typename T> class Optimizer {
-  private:
+  protected:
     std::vector<ValuePtr<T>> _parameters;
     T _learningRate;
 
   public:
     Optimizer(std::vector<ValuePtr<T>> params, T learningRate);
 
-    void reset();
-    void step();
+    virtual void reset();
+    virtual void step();
 };
 
 template <typename T>
