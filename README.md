@@ -3,18 +3,20 @@
 <h1>Shkyera Grad</h1>
 
 <i>
- micrograd, but in C++ and with more functionality.
+ micrograd, but in C++ and better.
 </i>
 <p></p>
 
-![LinuxBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/linux.yml/badge.svg) 
-![MacOSBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/macos.yml/badge.svg) 
-![WindowsBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg) 
+![LinuxBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/linux.yml/badge.svg)
+![MacOSBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/macos.yml/badge.svg)
+![WindowsBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg)
 ![LICENSE](https://img.shields.io/badge/license-Beerware-yellow)
 
 </div>
 
 This is a small header-only library of a scalar-valued autograd based on [Andrej Karpathy's micrograd](https://github.com/karpathy/micrograd). It provides a high-level, PyTorch-like API for creating and training simple neural networks.
+
+It supports multiple optimizers, such as Adam or SGD, all the most common activation functions and basic types of neural layers. All of it wrapped in a simple, header-only library.
 
 ## Usage
 
