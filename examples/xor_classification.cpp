@@ -16,14 +16,16 @@ int main() {
     auto mlp = SequentialBuilder<Type::float32>::begin()
                 .add(Linear32::create(2, 15))
                 .add(ReLU32::create())
-                .add(Dropout32::create(15, 5, 0.2))
+                .add(Linear32::create(15, 5))
+                .add(Sigmoid32::create())
+                .add(Linear32::create(5, 5))
                 .add(Tanh32::create())
                 .add(Linear32::create(5, 2))
                 .add(Softmax32::create())
                 .build();
     // clang-format on
 
-    Optimizer32 optimizer = Optimizer<Type::float32>(mlp->parameters(), 0.1);
+    Adam32 optimizer = Adam<Type::float32>(mlp->parameters(), 0.05);
     Loss::Function32 lossFunction = Loss::CrossEntropy<Type::float32>;
 
     // ------ TRAINING THE NETWORK ------- //
