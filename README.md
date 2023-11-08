@@ -7,6 +7,7 @@ micrograd, but in C++ and better.
 </i>
 <p></p>
 
+[![Documentation](https://github.com/fszewczyk/shkyera-grad/actions/workflows/docs.yml/badge.svg)](https://fszewczyk.github.io/shkyera-grad/index.html)
 [![LinuxBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/linux.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/linux.yml)
 [![MacOSBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/macos.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/macos.yml)
 [![WindowsBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml)
