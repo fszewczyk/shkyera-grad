@@ -114,7 +114,7 @@ auto network = SequentialBuilder<T>::begin()
                .build();                            // Don't forget to actually build your network
 ```
 
-@warn Remember that subsequent layers have to have matching input and output sizes.
+@warning Remember that subsequent layers have to have matching input and output sizes.
 
 @note For the full list of available layers and activation functions, check out the Cheat Sheet.
 
