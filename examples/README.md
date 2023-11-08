@@ -27,5 +27,5 @@ Epoch: 100 Loss: 0.0371898
 Vector(size=2, data={Value(data=0) Value(data=0) }) -> Value(data=0.115728)| True: Value(data=0)
 Vector(size=2, data={Value(data=1) Value(data=0) }) -> Value(data=0.93215) | True: Value(data=1)
 Vector(size=2, data={Value(data=0) Value(data=1) }) -> Value(data=0.937625)| True: Value(data=1)
-Vector(size=2, data={Value(data=0) Value(data=0) }) -> Value(data=0.115728)| True: Value(data=0)
+Vector(size=2, data={Value(data=1) Value(data=1) }) -> Value(data=0.115728)| True: Value(data=0)
 ```
