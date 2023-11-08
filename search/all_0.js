@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value_0',['Value',['../classshkyera_1_1Value.html',1,'shkyera']]]
+  ['cheatsheet_0',['Cheatsheet',['../md_docs_tutorials_Cheatsheet.html',1,'']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Shkyera Tensor: Main Page</title>
+<title>Shkyera Grad: Main Page</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,10 +27,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Shkyera Tensor
+   <div id="projectname">Shkyera Grad
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
-   <div id="projectbrief">Header-only C++ library for Deep Learning</div>
+   <div id="projectbrief">micrograd, but in C++ and better</div>
   </td>
  </tr>
  </tbody>
@@ -86,11 +86,57 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Shkyera Tensor Documentation</div>  </div>
+<div class="title">Shkyera Grad Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a> </p><div align="center"></div><div align="center"><h1>Shkyera Tensor</h1>
-</div><div align="center"> </div></div></div><!-- PageDoc -->
+<div class="textblock"><p><a class="anchor" id="md_README"></a> </p><div align="center"></div><div align="center"><h1>Shkyera Grad</h1>
+</div><div align="center"></div><div align="center"><em> micrograd, but in C++ and better. </em> </div><div align="center"></div><div align="center"></div><div align="center"><img src="https://github.com/fszewczyk/shkyera-engine/actions/workflows/linux.yml/badge.svg" alt="LinuxBuild" style="pointer-events: none;" class="inline"/> <img src="https://github.com/fszewczyk/shkyera-engine/actions/workflows/macos.yml/badge.svg" alt="MacOSBuild" style="pointer-events: none;" class="inline"/> <img src="https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg" alt="WindowsBuild" style="pointer-events: none;" class="inline"/> <img src="https://img.shields.io/badge/license-Beerware-yellow" alt="LICENSE" class="inline"/></div><div align="center"></div><p>This is a small header-only library of a scalar-valued autograd based on <a href="https://github.com/karpathy/micrograd">Andrej Karpathy's micrograd</a>. It provides a high-level, PyTorch-like API for creating and training simple neural networks.</p>
+<p>It supports multiple optimizers, such as Adam or SGD, all the most common activation functions and basic types of neural layers. All of it wrapped in a simple, header-only library.</p>
+<h2><a class="anchor" id="autotoc_md0"></a>
+Usage</h2>
+<p>Make sure your compiler supports C++17. Shkyera Grad is a header-only library, so the only thing you need to do is to include it in your project.</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;include/ShkyeraGrad.hpp&quot;</span></div>
+</div><!-- fragment --><p>Check out the <a class="el" href="/home/runner/work/shkyera-grad/shkyera-grad/examples/README.md#md_examples_README">examples</a> for a quick start on Shkyera Grad. In the meantime, here's a neural network that learns the XOR function.</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;include/ShkyeraGrad.hpp&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    <span class="keyword">using namespace </span>shkyera;</div>
+<div class="line"> </div>
+<div class="line">    std::vector&lt;Vec32&gt; xs;</div>
+<div class="line">    std::vector&lt;Vec32&gt; ys;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// ---------- INPUT ----------- | -------- OUTPUT --------- //</span></div>
+<div class="line">    xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));</div>
+<div class="line">    xs.push_back(Vec32::of({1, 0})); ys.push_back(Vec32::of({1}));</div>
+<div class="line">    xs.push_back(Vec32::of({0, 1})); ys.push_back(Vec32::of({1}));</div>
+<div class="line">    xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));</div>
+<div class="line"> </div>
+<div class="line">    <span class="keyword">auto</span> mlp = SequentialBuilder&lt;Type::float32&gt;::begin()</div>
+<div class="line">                .add(Layer32::create(2, 15, Activation::relu&lt;Type::float32&gt;))</div>
+<div class="line">                .add(Layer32::create(15, 5, Activation::relu&lt;Type::float32&gt;))</div>
+<div class="line">                .add(Layer32::create(5, 1, Activation::sigmoid&lt;Type::float32&gt;))</div>
+<div class="line">                .build();</div>
+<div class="line"> </div>
+<div class="line">    Optimizer32 optimizer = Optimizer&lt;Type::float32&gt;(mlp-&gt;parameters(), 0.1);</div>
+<div class="line">    Loss::Function32 lossFunction = Loss::MSE&lt;Type::float32&gt;;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// ------ TRAINING THE NETWORK ------- //</span></div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> epoch = 0; epoch &lt; 100; epoch++) {</div>
+<div class="line">        <span class="keyword">auto</span> epochLoss = Val32::create(0);</div>
+<div class="line"> </div>
+<div class="line">        optimizer.reset();</div>
+<div class="line">        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample = 0; sample &lt; xs.size(); ++sample) {</div>
+<div class="line">            Vec32 pred = mlp-&gt;forward(xs[sample]);</div>
+<div class="line">            <span class="keyword">auto</span> loss = lossFunction(pred, ys[sample]);</div>
+<div class="line"> </div>
+<div class="line">            epochLoss = epochLoss + loss;</div>
+<div class="line">        }</div>
+<div class="line">        optimizer.step();</div>
+<div class="line"> </div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;Epoch: &quot;</span> &lt;&lt; epoch + 1 &lt;&lt; <span class="stringliteral">&quot; Loss: &quot;</span> &lt;&lt; epochLoss-&gt;getValue() &lt;&lt; std::endl;</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

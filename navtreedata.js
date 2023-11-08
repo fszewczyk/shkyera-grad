@@ -24,21 +24,29 @@
 */
 var NAVTREE =
 [
-  [ "Shkyera Tensor", "index.html", [
-    [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ],
-      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ]
-    ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+  [ "Shkyera Grad", "index.html", [
+    [ "Cheatsheet", "md_docs_tutorials_Cheatsheet.html", null ],
+    [ "Get Started", "md_docs_tutorials_GetStarted.html", [
+      [ "Usage", "index.html#autotoc_md0", null ],
+      [ "Setup", "md_docs_tutorials_GetStarted.html#autotoc_md3", null ],
+      [ "Scalars", "md_docs_tutorials_GetStarted.html#autotoc_md4", null ],
+      [ "Vector", "md_docs_tutorials_GetStarted.html#autotoc_md5", null ],
+      [ "Sequential", "md_docs_tutorials_GetStarted.html#autotoc_md6", null ],
+      [ "Training", "md_docs_tutorials_GetStarted.html#autotoc_md7", null ],
+      [ "Learning XOR", "md_docs_tutorials_GetStarted.html#autotoc_md8", [
+        [ "Let's define our dataset.", "md_docs_tutorials_GetStarted.html#autotoc_md9", null ],
+        [ "Neural Network", "md_docs_tutorials_GetStarted.html#autotoc_md10", null ],
+        [ "Training Loop", "md_docs_tutorials_GetStarted.html#autotoc_md11", null ],
+        [ "Verifying the results", "md_docs_tutorials_GetStarted.html#autotoc_md12", null ],
+        [ "Results", "md_docs_tutorials_GetStarted.html#autotoc_md13", null ]
+      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"Value_8hpp_source.html"
+"index.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
