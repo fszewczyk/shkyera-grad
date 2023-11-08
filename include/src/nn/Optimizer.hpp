@@ -19,8 +19,8 @@ template <typename T> class Optimizer {
   public:
     Optimizer(std::vector<ValuePtr<T>> params, T learningRate);
 
-    void resetGradient();
-    void stepGradient();
+    void reset();
+    void step();
 };
 
 template <typename T>
@@ -28,11 +28,11 @@ Optimizer<T>::Optimizer(std::vector<ValuePtr<T>> params, T learningRate) : _lear
     _parameters = params;
 }
 
-template <typename T> void Optimizer<T>::resetGradient() {
+template <typename T> void Optimizer<T>::reset() {
     std::for_each(_parameters.begin(), _parameters.end(), [](ValuePtr<T> val) { val->_gradient = 0; });
 }
 
-template <typename T> void Optimizer<T>::stepGradient() {
+template <typename T> void Optimizer<T>::step() {
     std::for_each(_parameters.begin(), _parameters.end(),
                   [this](ValuePtr<T> val) { val->_data -= _learningRate * val->_gradient; });
 }

@@ -21,6 +21,30 @@ Function<T> MSE = [](Vector<T> a, Vector<T> b) {
         loss = loss + ((a[i] - b[i])->pow(Value<T>::create(2)));
     }
 
+    if (a.size() > 0)
+        loss = loss / Value<T>::create(a.size());
+
+    loss->backward();
+
+    return loss;
+};
+
+template <typename T>
+Function<T> MAE = [](Vector<T> a, Vector<T> b) {
+    if (a.size() != b.size()) {
+        throw std::invalid_argument("Vectors need to be of the same size to compute the MAE loss. Sizes are " +
+                                    std::to_string(a.size()) + " and " + std::to_string(b.size()) + ".");
+    }
+
+    ValuePtr<T> loss = Value<T>::create(0);
+    for (size_t i = 0; i < a.size(); ++i) {
+        ValuePtr<T> difference = a[i] > b[i] ? a[i] - b[i] : b[i] - a[i];
+        loss = loss + difference;
+    }
+
+    if (a.size() > 0)
+        loss = loss / Value<T>::create(a.size());
+
     loss->backward();
 
     return loss;
