@@ -7,7 +7,9 @@
 
 #pragma once
 
+#include <algorithm>
 #include <random>
+#include <vector>
 
 namespace shkyera::utils {
 
@@ -35,12 +37,16 @@ template <typename T> std::enable_if_t<std::is_integral_v<T>, T> sample(T from, 
     return distribution(generator);
 }
 
-template <typename T> std::enable_if_t<std::is_integral_v<T>, std::vector<T>> sample(T from, T to, size_t size) {
+template <typename T>
+std::enable_if_t<std::is_integral_v<T>, std::vector<T>> sample(T from, T to, size_t size, bool withReplacement = true) {
     std::uniform_int_distribution<T> distribution(from, to);
 
     std::vector<T> sampled(size);
     for (size_t i = 0; i < size; i++) {
-        sampled[i] = distribution(generator);
+        T candidate = distribution(generator);
+        while (!withReplacement && std::find(sampled.begin(), sampled.end(), candidate) != sampled.end())
+            candidate = distribution(generator);
+        sampled[i] = candidate;
     }
 
     return sampled;

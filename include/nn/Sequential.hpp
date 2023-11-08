@@ -8,7 +8,6 @@
 #pragma once
 
 #include "../core/Type.hpp"
-#include "Activation.hpp"
 #include "Module.hpp"
 
 namespace shkyera {
