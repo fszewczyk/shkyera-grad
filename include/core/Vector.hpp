@@ -150,7 +150,7 @@ template <typename T> ValuePtr<T> Vector<T>::operator[](size_t index) const { re
 template <typename T> std::ostream &operator<<(std::ostream &os, const Vector<T> &vector) {
     os << "Vector(size=" << vector.size() << ", data={";
 
-    for (const ValuePtr<T> val : vector._values)
+    for (auto val : vector)
         os << val << ' ';
 
     os << "})";
