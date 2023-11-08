@@ -42,9 +42,12 @@ int main() {
     xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));
 
     auto mlp = SequentialBuilder<Type::float32>::begin()
-                .add(Layer32::create(2, 15, Activation::relu<Type::float32>))
-                .add(Layer32::create(15, 5, Activation::relu<Type::float32>))
-                .add(Layer32::create(5, 1, Activation::sigmoid<Type::float32>))
+                .add(Linear32::create(2, 15))
+                .add(ReLU32::create())
+                .add(Dropout32::create(15, 5, 0.2))
+                .add(ReLU32::create())
+                .add(Linear32::create(5, 1))
+                .add(Sigmoid32::create())
                 .build();
 
     Optimizer32 optimizer = Optimizer<Type::float32>(mlp->parameters(), 0.1);
