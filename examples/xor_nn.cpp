@@ -11,19 +11,19 @@ int main() {
     xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));
     xs.push_back(Vec32::of({1, 0})); ys.push_back(Vec32::of({1}));
     xs.push_back(Vec32::of({0, 1})); ys.push_back(Vec32::of({1}));
-    xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));
+    xs.push_back(Vec32::of({1, 1})); ys.push_back(Vec32::of({0}));
 
     auto mlp = SequentialBuilder<Type::float32>::begin()
                 .add(Linear32::create(2, 15))
                 .add(ReLU32::create())
                 .add(Dropout32::create(15, 5, 0.2))
-                .add(ReLU32::create())
+                .add(Tanh32::create())
                 .add(Linear32::create(5, 1))
                 .add(Sigmoid32::create())
                 .build();
     // clang-format on
 
-    Optimizer32 optimizer = Optimizer<Type::float32>(mlp->parameters(), 0.1);
+    Optimizer32 optimizer = Optimizer<Type::float32>(mlp->parameters(), 0.2);
     Loss::Function32 lossFunction = Loss::MSE<Type::float32>;
 
     // ------ TRAINING THE NETWORK ------- //
