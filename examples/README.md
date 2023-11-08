@@ -1,4 +1,4 @@
-## Shkyera Grad Examples
+## Examples
 
 To compile an example, simply run the following command:
 
