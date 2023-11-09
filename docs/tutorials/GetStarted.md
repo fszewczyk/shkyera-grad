@@ -79,21 +79,24 @@ If you want some refreshment on derivatives, check out [this wonderful video](ht
 Multiple scalars can be grouped together in a `Vector` to simplify operating on them. Input to any `Module` (more on them later) is a `Vector`. This abstraction provides some functionality that allows you to compute, for example a dot product.
 
 ```{.cpp}
-// The easiest way to create a Vector
-auto a = Vector<T>::of({1, 2, 3});
+// The easiest way to create e Vector
+auto a = Vector<T>::of(1, 2, 3);
+
+// A bit more annoying way to create a Vector
+auto b = Vector<T>::of({1, 2, 3});
 
 // The hard way to create a Vector
-auto b = Vector<T>(Value<T>::create(2), Value<T>::create(3), Value<T>::create(4));
+auto c = Vector<T>(Value<T>::create(2), Value<T>::create(3), Value<T>::create(4));
 
 // You can access elements in a vector
-auto c = Vector<T>::of({a[0]*b[0], a[1]*b[1], a[2]*b[2]});
+auto d = Vector<T>::of({a[0]*b[0], a[1]*b[1], a[2]*b[2]});
 
 // And even iterate over it
-for(auto &entry : c)
-    std::cout << c << std::endl; // prints: 2 6 12
+for(auto &entry : d)
+    std::cout << entry << std::endl; // prints: 2 6 12
 
-auto d = a.dot(b)       // c = 1 * 2 + 2 * 3 + 3 * 4 = 20
-d->backward();          // You can compute of this result since it's a scalar!
+auto e = b.dot(c)       // c = 1 * 2 + 2 * 3 + 3 * 4 = 20
+e->backward();          // You can compute of this result since it's a scalar!
 ```
 
 `Vectors` are very useful since this is the way both the input and output data is represented. Each sample consits of an input `Vector` and a target output `Vector`.
@@ -169,10 +172,10 @@ std::vector<Vec32> xs;
 std::vector<Vec32> ys;
 
 // ---------- INPUT ----------- | -------- OUTPUT --------- //
-xs.push_back(Vec32::of({0, 0})); ys.push_back(Vec32::of({0}));
-xs.push_back(Vec32::of({1, 0})); ys.push_back(Vec32::of({1}));
-xs.push_back(Vec32::of({0, 1})); ys.push_back(Vec32::of({1}));
-xs.push_back(Vec32::of({1, 1})); ys.push_back(Vec32::of({0}));
+xs.push_back(Vec32::of(0, 0)); ys.push_back(Vec32::of(0));
+xs.push_back(Vec32::of(1, 0)); ys.push_back(Vec32::of(1));
+xs.push_back(Vec32::of(0, 1)); ys.push_back(Vec32::of(1));
+xs.push_back(Vec32::of(1, 1)); ys.push_back(Vec32::of(0));
 ```
 
 ### Neural Network

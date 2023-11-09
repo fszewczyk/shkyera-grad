@@ -16,6 +16,22 @@ Adam64 = Adam<Type::f64>
 {Class}64 = {Class}<Type::float64> = {Class}<double>
 ```
 
+## Vectors
+
+Here are all the available operations using `Vector`:
+
+```{.cpp}
+auto a = Vector<float>::of(1, 2, 3);
+auto b = Vector<float>::of({2, 3, 4}); // a[i] == b[i];
+
+a.size() // 3
+a.dot(b) // 1 * 2 + 2 * 3 + 3 * 4 = 20
+a.sum()  // 6
+a *= 3   // a = {3, 6, 9}
+a /= 2   // a = {1.5, 3, 4.5}
+a[1]     // 3
+```
+
 ## Layers
 
 Here's a full list of available layers:
@@ -32,7 +48,7 @@ These are all implemented optimizers:
 ```{.cpp}
 auto simple = Optimizer32(network->parameters(), learningRate);
 auto sgdWithMomentum = SGD32(network->parameters(), learningRate, momentum = 0.9);
-auto adam = Adam32(network->parameters(), learningRate, beta1 = 0.9, beta2=0.999, epsilon=1e-8);
+auto adam = Adam32(network->parameters(), learningRate, beta1 = 0.9, beta2 = 0.999, epsilon = 1e-8);
 ```
 
 ## Loss functions

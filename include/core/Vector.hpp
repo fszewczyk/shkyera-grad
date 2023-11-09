@@ -28,6 +28,8 @@ template <typename T> class Vector {
     Vector(std::vector<ValuePtr<T>> values);
 
     static Vector<T> of(const std::vector<T> &values);
+    template <typename... Args> static Vector<T> of(const Args &...args);
+
     ValuePtr<T> dot(const Vector<T> &other) const;
     ValuePtr<T> sum() const;
     size_t size() const;
@@ -73,6 +75,15 @@ template <typename T> Vector<T> Vector<T>::of(const std::vector<T> &values) {
     return valuePtrs;
 }
 
+template <typename T> template <typename... Args> Vector<T> Vector<T>::of(const Args &...args) {
+    std::vector<ValuePtr<T>> valuePtrs;
+    valuePtrs.reserve(sizeof...(args));
+
+    (valuePtrs.emplace_back(Value<T>::create(args)), ...);
+
+    return Vector<T>(valuePtrs);
+}
+
 template <typename T> size_t Vector<T>::size() const { return _values.size(); }
 
 template <typename T> ValuePtr<T> Vector<T>::dot(const Vector<T> &other) const {
@@ -96,12 +107,12 @@ template <typename T> ValuePtr<T> Vector<T>::sum() const {
 }
 
 template <typename T> Vector<T> operator/(Vector<T> x, T val) {
-    x /= val;
+    x *= Value<T>::create(val);
     return x;
 }
 
 template <typename T> Vector<T> operator*(Vector<T> x, T val) {
-    x *= val;
+    x *= Value<T>::create(val);
     return x;
 }
 
