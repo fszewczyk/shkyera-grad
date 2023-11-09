@@ -104,14 +104,17 @@ Showcase</h2>
 <div class="line">    <span class="keyword">using namespace </span>shkyera;</div>
 <div class="line">    <span class="keyword">using</span> T = Type::float32;</div>
 <div class="line"> </div>
-<div class="line">    std::vector&lt;Vec32&gt; xs;</div>
-<div class="line">    std::vector&lt;Vec32&gt; ys;</div>
+<div class="line">    <span class="comment">// This is our XOR dataset. It maps from Vec32 to Vec32</span></div>
+<div class="line">    Dataset&lt;Vec32, Vec32&gt; data;</div>
+<div class="line">    data.addSample(Vec32::of(0, 0), Vec32::of(0));</div>
+<div class="line">    data.addSample(Vec32::of(0, 1), Vec32::of(1));</div>
+<div class="line">    data.addSample(Vec32::of(1, 0), Vec32::of(1));</div>
+<div class="line">    data.addSample(Vec32::of(1, 1), Vec32::of(0));</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// ---------- INPUT ----------- | -------- OUTPUT --------- //</span></div>
-<div class="line">    xs.push_back(Vec32::of(0, 0)); ys.push_back(Vec32::of(0));</div>
-<div class="line">    xs.push_back(Vec32::of(1, 0)); ys.push_back(Vec32::of(1));</div>
-<div class="line">    xs.push_back(Vec32::of(0, 1)); ys.push_back(Vec32::of(1));</div>
-<div class="line">    xs.push_back(Vec32::of(1, 1)); ys.push_back(Vec32::of(0));</div>
+<div class="line">    <span class="comment">// The is the data loader, it will take care of batching</span></div>
+<div class="line">    <span class="keywordtype">size_t</span> batchSize = 2;</div>
+<div class="line">    <span class="keywordtype">bool</span> shuffle = <span class="keyword">true</span>;</div>
+<div class="line">    DataLoader loader(data, batchSize, shuffle);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">auto</span> network = SequentialBuilder&lt;Type::float32&gt;::begin()</div>
 <div class="line">                    .add(Linear32::create(2, 15))</div>
@@ -122,29 +125,26 @@ Showcase</h2>
 <div class="line">                    .add(Sigmoid32::create())</div>
 <div class="line">                    .build();</div>
 <div class="line"> </div>
-<div class="line"> </div>
-<div class="line">    <span class="keyword">auto</span> optimizer = Adam32(network-&gt;parameters(), 0.05);</div>
+<div class="line">    <span class="keyword">auto</span> optimizer = Adam32(network-&gt;parameters(), 0.1);</div>
 <div class="line">    <span class="keyword">auto</span> lossFunction = Loss::MSE&lt;T&gt;;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> epoch = 0; epoch &lt; 100; epoch++) { <span class="comment">// We train for 100 epochs</span></div>
 <div class="line">        <span class="keyword">auto</span> epochLoss = Val32::create(0);</div>
 <div class="line"> </div>
-<div class="line">        optimizer.reset();                                      <span class="comment">// Reset the gradients</span></div>
-<div class="line">        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample = 0; sample &lt; xs.size(); ++sample) { <span class="comment">// We go through each sample</span></div>
-<div class="line">            Vec32 pred = network-&gt;forward(xs[sample]);          <span class="comment">// We get some prediction</span></div>
-<div class="line">            <span class="keyword">auto</span> loss = lossFunction(pred, ys[sample]);         <span class="comment">// And calculate its error</span></div>
-<div class="line"> </div>
-<div class="line">            epochLoss = epochLoss + loss; <span class="comment">// Store the loss for feedback</span></div>
+<div class="line">        optimizer.reset();                                                <span class="comment">// Reset the gradients</span></div>
+<div class="line">        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[x, y] : loader) {                               <span class="comment">// For each batch</span></div>
+<div class="line">            <span class="keyword">auto</span> pred = network-&gt;forward(x);                              <span class="comment">// We get some prediction</span></div>
+<div class="line">            epochLoss = epochLoss + Loss::compute(lossFunction, pred, y); <span class="comment">// And calculate its error</span></div>
 <div class="line">        }</div>
 <div class="line">        optimizer.step(); <span class="comment">// Update the parameters</span></div>
 <div class="line"> </div>
-<div class="line">        <span class="keyword">auto</span> averageLoss = epochLoss / Val32::create(xs.size());</div>
+<div class="line">        <span class="keyword">auto</span> averageLoss = epochLoss / Val32::create(loader.getTotalBatches());</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;Epoch: &quot;</span> &lt;&lt; epoch + 1 &lt;&lt; <span class="stringliteral">&quot; Loss: &quot;</span> &lt;&lt; averageLoss-&gt;getValue() &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample = 0; sample &lt; xs.size(); ++sample) { <span class="comment">// Go through each example</span></div>
-<div class="line">        Vec32 pred = network-&gt;forward(xs[sample]);          <span class="comment">// Predict result</span></div>
-<div class="line">        std::cout &lt;&lt; xs[sample] &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; pred[0] &lt;&lt; <span class="stringliteral">&quot;\t| True: &quot;</span> &lt;&lt; ys[sample][0] &lt;&lt; std::endl;</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;[x, y] : data) {          <span class="comment">// Go through each example</span></div>
+<div class="line">        <span class="keyword">auto</span> pred = network-&gt;forward(x); <span class="comment">// We get some prediction</span></div>
+<div class="line">        std::cout &lt;&lt; x &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; pred[0] &lt;&lt; <span class="stringliteral">&quot;\t| True: &quot;</span> &lt;&lt; y[0] &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
