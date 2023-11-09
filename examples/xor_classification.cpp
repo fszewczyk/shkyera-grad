@@ -25,7 +25,7 @@ int main() {
                 .build();
     // clang-format on
 
-    SGD32 optimizer = SGD<Type::float32>(mlp->parameters(), 0.1);
+    Adam32 optimizer = Adam<Type::float32>(mlp->parameters(), 0.1);
     Loss::Function32 lossFunction = Loss::CrossEntropy<Type::float32>;
 
     // ------ TRAINING THE NETWORK ------- //
