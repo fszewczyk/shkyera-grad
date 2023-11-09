@@ -11,10 +11,12 @@
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <stack>
 #include <unordered_set>
 #include <vector>
 
 #include "Type.hpp"
+#include "Utils.hpp"
 
 namespace shkyera {
 
@@ -38,7 +40,8 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     Value(T data);
 
     std::vector<ValuePtr<T>> topologicalSort();
-    std::vector<ValuePtr<T>> topologicalSort(std::vector<ValuePtr<T>> &sorted, std::unordered_set<Value<T> *> &visited);
+
+    inline static double topoSortTime = 0;
 
   public:
     friend class Optimizer<T>;
@@ -50,6 +53,8 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
     void backward();
     T getValue();
     T getGradient();
+
+    static double getTopoTime() { return topoSortTime; }
 
     ValuePtr<T> tanh();
     ValuePtr<T> relu();
@@ -188,22 +193,36 @@ template <typename T> ValuePtr<T> Value<T>::pow(ValuePtr<T> exponent) {
 }
 
 template <typename T> std::vector<ValuePtr<T>> Value<T>::topologicalSort() {
+    auto timer = utils::startTimer();
+
     std::vector<ValuePtr<T>> sorted;
     std::unordered_set<Value<T> *> visited;
 
-    return topologicalSort(sorted, visited);
-}
+    std::stack<Value<T> *> stack;
+    stack.push(this);
 
-template <typename T>
-std::vector<ValuePtr<T>> Value<T>::topologicalSort(std::vector<ValuePtr<T>> &sorted,
-                                                   std::unordered_set<Value<T> *> &visited) {
-    if (visited.find(this) == visited.end()) {
-        visited.insert(this);
-        for (ValuePtr<T> val : _children) {
-            val->topologicalSort(sorted, visited);
+    while (!stack.empty()) {
+        auto cur = stack.top();
+        if (visited.find(cur) == visited.end()) {
+            bool hasUnvisitedChildren = false;
+            for (auto v : cur->_children) {
+                if (visited.find(v.get()) == visited.end()) {
+                    stack.push(v.get());
+                    hasUnvisitedChildren = true;
+                }
+            }
+
+            if (!hasUnvisitedChildren) {
+                stack.pop();
+                sorted.push_back(cur->shared_from_this());
+                visited.insert(cur);
+            }
+        } else {
+            stack.pop();
         }
-        sorted.push_back(this->shared_from_this());
     }
+
+    topoSortTime += utils::stopTimer(timer);
 
     return sorted;
 }
