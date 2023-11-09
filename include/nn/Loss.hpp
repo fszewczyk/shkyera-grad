@@ -80,6 +80,13 @@ Function<T> CrossEntropy = [](Vector<T> a, Vector<T> b) {
     return loss;
 };
 
+template <typename T>
+ValuePtr<T> compute(Function<T> lossFunction, const Vector<T> prediction, const Vector<T> target) {
+    auto loss = lossFunction(prediction, target);
+    loss->backward();
+    return loss;
+}
+
 template <typename T> ValuePtr<T> compute(Function<T> lossFunction, const Batch<T> prediction, const Batch<T> target) {
     ValuePtr<T> loss = Value<T>::create(0);
     for (size_t i = 0; i < prediction.size(); ++i) {
