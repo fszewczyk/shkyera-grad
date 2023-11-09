@@ -6,7 +6,7 @@ This page contains all the info you need to develop your models using Shkyera Gr
 
 Almost all of the classes in _Shkyera Grad_ are implemented using templates. To simplify creation of these objects, we introduced a standard way to instantiate objects with floating-point template parameters, i.e.
 
-```cpp
+```{.cpp}
 Linear32 = Linear<float>
 Optimizer32 = Optimizer<Type::float32>>
 Loss::MSE64 = Loss::MSE<double>
@@ -20,7 +20,7 @@ Adam64 = Adam<Type::f64>
 
 Here's a full list of available layers:
 
-```cpp
+```{.cpp}
 auto linear = Linear32::create(inputSize, outputSize);
 auto dropout = Dropout32::create(inputSize, outputSize, dropoutRate);
 ```
@@ -29,7 +29,7 @@ auto dropout = Dropout32::create(inputSize, outputSize, dropoutRate);
 
 These are all implemented optimizers:
 
-```cpp
+```{.cpp}
 auto simple = Optimizer32(network->parameters(), learningRate);
 auto sgdWithMomentum = SGD32(network->parameters(), learningRate, momentum = 0.9);
 auto adam = Adam32(network->parameters(), learningRate, beta1 = 0.9, beta2=0.999, epsilon=1e-8);
@@ -39,7 +39,7 @@ auto adam = Adam32(network->parameters(), learningRate, beta1 = 0.9, beta2=0.999
 
 Optimization can be performed according to these predefined loss functions:
 
-```cpp
+```{.cpp}
 auto L1 = Loss::MAE32;
 auto L2 = Loss::MSE32;
 auto crossEntropy = Loss::CrossEntropy32;
@@ -49,7 +49,7 @@ auto crossEntropy = Loss::CrossEntropy32;
 
 Simply copy-pase this code to quickly train your network:
 
-```cpp
+```{.cpp}
 using T = Type::float32; // feel free to change it to float64
 
 auto optimizer = Adam<T>(network->parameters(), 0.05);

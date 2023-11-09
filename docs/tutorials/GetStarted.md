@@ -12,7 +12,7 @@ git clone https://github.com/fszewczyk/shkyera-grad.git
 
 and import the main file of the library inside your own project.
 
-```cpp
+```{.cpp}
 #include "shkyera-grad/include/ShkyeraGrad.hpp"
 ```
 
@@ -24,7 +24,7 @@ Now, you can use all the features of this small engine.
 
 Internally, _Shkyera Grad_ **always** operates on individual scalars. For most purposes, you do not need to deal with them directly, but it's nice to understand how they work. Each scalar is wrapped inside a `Value` class. However, you should never instantiate objects of this type yourself. Instead, you should use the provided interface in the following way.
 
-```cpp
+```{.cpp}
 // Creates a floating-point scalar
 ValuePtr<float> a = Value<float>::create(5.2);
 ValuePtr<Type::f32> a = Value<Type::f32>::create(5.2);
@@ -45,7 +45,7 @@ auto c = Value<int>::create(7);
 
 You can also perform various operations directly on scalars!
 
-```cpp
+```{.cpp}
 using T = Type::float32;
 
 auto a = Value<T>::create(2.1);
@@ -60,7 +60,7 @@ auto e = (a + b - c)->pow(d);
 
 The magic behind the _Shkyera Grad_ is that it keeps track of all the operations, so that you can later calculate the derivatives of your expression.
 
-```cpp
+```{.cpp}
 auto a = Value<T>::create(2.0);
 auto b = Value<T>::create(3.0);
 auto c = a * b;
@@ -78,7 +78,7 @@ If you want some refreshment on derivatives, check out [this wonderful video](ht
 
 Multiple scalars can be grouped together in a `Vector` to simplify operating on them. Input to any `Module` (more on them later) is a `Vector`. This abstraction provides some functionality that allows you to compute, for example a dot product.
 
-```cpp
+```{.cpp}
 // The easiest way to create a Vector
 auto a = Vector<T>::of({1, 2, 3});
 
@@ -104,7 +104,7 @@ Nice! You got the basics! Let's build a network. The best way to create a model 
 
 You can create your first neural network using `SequentialBuilder` in the following way.
 
-```cpp
+```{.cpp}
 auto network = SequentialBuilder<T>::begin()
                .add(Linear<T>::create(2, 15))       // Adds a layer with 2 inputs and 15 outputs
                .add(ReLU<T>::create())              // Adds a ReLU activation function
@@ -122,7 +122,7 @@ auto network = SequentialBuilder<T>::begin()
 
 To train our network, we need to define an `Optimizer` that will optimizer the parameters as well as the `Loss` function that we will minimize. _Shkyera Grad_ comes with a set of well-known optimizers and loss functions. Again, check out the Cheat Sheet for a complete list.
 
-```cpp
+```{.cpp}
 // Simple stochastic gradient descent optimizer with 0.01 learning rate
 auto optimizer = Optimizer<T>(network->parameters(), 0.01);
 
@@ -141,7 +141,7 @@ auto awesomeCustomOptimizer = Adam32(network->parameters(), 0.01, beta1, beta2, 
 
 Here's a list of some available `Loss` functions:
 
-```cpp
+```{.cpp}
 Loss::MAE<T>            // Mean Absolute Error
 Loss::MSE<T>            // Mean Squared Error
 Loss::CrossEntropy<T>   // Cross Entropy Loss - good for classification
@@ -164,7 +164,7 @@ XOR (Exclusive OR) is a simple Boolean function that maps two values two one:
 
 Here, we basically pase the table above into `Vector`s.
 
-```cpp
+```{.cpp}
 std::vector<Vec32> xs;
 std::vector<Vec32> ys;
 
@@ -179,7 +179,7 @@ xs.push_back(Vec32::of({1, 1})); ys.push_back(Vec32::of({0}));
 
 We define a simple neural network to predict this function. Our network has a total of three layers. It is a bit of an overkill for this task, but we will use it for learning purposes.
 
-```cpp
+```{.cpp}
 auto network = SequentialBuilder<Type::float32>::begin()
                 .add(Linear32::create(2, 15))
                 .add(ReLU32::create())
@@ -194,14 +194,14 @@ auto network = SequentialBuilder<Type::float32>::begin()
 
 Now, we just need to specify the optimizer and the loss function we want to use:
 
-```cpp
+```{.cpp}
 auto optimizer = Adam32(network->parameters(), 0.05);
 auto lossFunction = Loss::MSE<T>;
 ```
 
 We train our model for 100 epochs. After each epoch, we pring the average loss.
 
-```cpp
+```{.cpp}
 for (size_t epoch = 0; epoch < 100; epoch++) {              // We train for 100 epochs
     auto epochLoss = Val32::create(0);
 
@@ -223,7 +223,7 @@ for (size_t epoch = 0; epoch < 100; epoch++) {              // We train for 100 
 
 After the training, let's inspect how our network behaves.
 
-```cpp
+```{.cpp}
 for (size_t sample = 0; sample < xs.size(); ++sample) {         // Go through each example
     Vec32 pred = network->forward(xs[sample]);                  // Predict result
     std::cout << xs[sample] << " -> " << pred << "\t| True: " << ys[sample] << std::endl;
