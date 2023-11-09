@@ -8,6 +8,7 @@
 #pragma once
 
 #include "../core/Value.hpp"
+#include "../core/Vector.hpp"
 
 namespace shkyera::Loss {
 
@@ -31,8 +32,6 @@ Function<T> MSE = [](Vector<T> a, Vector<T> b) {
     if (a.size() > 0)
         loss = loss / Value<T>::create(a.size());
 
-    loss->backward();
-
     return loss;
 };
 
@@ -51,8 +50,6 @@ Function<T> MAE = [](Vector<T> a, Vector<T> b) {
 
     if (a.size() > 0)
         loss = loss / Value<T>::create(a.size());
-
-    loss->backward();
 
     return loss;
 };
@@ -80,9 +77,19 @@ Function<T> CrossEntropy = [](Vector<T> a, Vector<T> b) {
         loss = loss - (b[i] * (a[i]->log()));
     }
 
+    return loss;
+};
+
+template <typename T> ValuePtr<T> compute(Function<T> lossFunction, const Batch<T> prediction, const Batch<T> target) {
+    ValuePtr<T> loss = Value<T>::create(0);
+    for (size_t i = 0; i < prediction.size(); ++i) {
+        loss = loss + lossFunction(prediction[i], target[i]);
+    }
+    loss = loss / Value<T>::create(prediction.size());
+
     loss->backward();
 
     return loss;
-};
+}
 
 } // namespace shkyera::Loss

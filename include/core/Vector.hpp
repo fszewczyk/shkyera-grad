@@ -18,6 +18,7 @@ template <typename T> class Vector;
 
 using Vec32 = Vector<Type::float32>;
 using Vec64 = Vector<Type::float64>;
+template <typename T> using Batch = std::vector<Vector<T>>;
 
 template <typename T> class Vector {
   private:

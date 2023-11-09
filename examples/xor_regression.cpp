@@ -28,18 +28,14 @@ int main() {
     auto lossFunction = Loss::MSE<T>;
 
     for (size_t epoch = 0; epoch < 100; epoch++) { // We train for 100 epochs
-        auto epochLoss = Val32::create(0);
+        optimizer.reset();                         // Reset the gradients
 
-        optimizer.reset();                                      // Reset the gradients
-        for (size_t sample = 0; sample < xs.size(); ++sample) { // We go through each sample
-            Vec32 pred = network->forward(xs[sample]);          // We get some prediction
-            auto loss = lossFunction(pred, ys[sample]);         // And calculate its error
+        auto pred = network->forward(xs);                  // We get some prediction
+        auto loss = Loss::compute(lossFunction, pred, ys); // And calculate its error
 
-            epochLoss = epochLoss + loss; // Store the loss for feedback
-        }
         optimizer.step(); // Update the parameters
 
-        auto averageLoss = epochLoss / Val32::create(xs.size());
+        auto averageLoss = loss / Val32::create(xs.size());
         std::cout << "Epoch: " << epoch + 1 << " Loss: " << averageLoss->getValue() << std::endl;
     }
 

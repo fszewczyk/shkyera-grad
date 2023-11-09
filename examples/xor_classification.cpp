@@ -30,18 +30,14 @@ int main() {
 
     // ------ TRAINING THE NETWORK ------- //
     for (size_t epoch = 0; epoch < 100; epoch++) {
-        auto epochLoss = Val32::create(0);
-
         optimizer.reset();
-        for (size_t sample = 0; sample < xs.size(); ++sample) {
-            Vec32 pred = mlp->forward(xs[sample]);
-            auto loss = lossFunction(pred, ys[sample]);
 
-            epochLoss = epochLoss + loss;
-        }
+        std::vector<Vec32> pred = mlp->forward(xs);
+        auto loss = Loss::compute32(lossFunction, pred, ys);
+
         optimizer.step();
 
-        std::cout << "Epoch: " << epoch + 1 << " Loss: " << epochLoss->getValue() / xs.size() << std::endl;
+        std::cout << "Epoch: " << epoch + 1 << " Loss: " << loss->getValue() / xs.size() << std::endl;
     }
 
     // ------ VERIFYING THAT IT WORKS ------//
