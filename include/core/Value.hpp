@@ -22,6 +22,7 @@ namespace shkyera {
 
 template <typename T> class Optimizer;
 template <typename T> class Adam;
+template <typename T> class AdaMax;
 template <typename T> class SGD;
 template <typename T> class NAG;
 
@@ -47,6 +48,7 @@ template <typename T> class Value : public std::enable_shared_from_this<Value<T>
   public:
     friend class Optimizer<T>;
     friend class Adam<T>;
+    friend class AdaMax<T>;
     friend class SGD<T>;
     friend class NAG<T>;
 

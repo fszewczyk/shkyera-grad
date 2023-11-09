@@ -17,6 +17,7 @@
 #include "nn/Neuron.hpp"
 #include "nn/Sequential.hpp"
 
+#include "nn/optimizers/AdaMax.hpp"
 #include "nn/optimizers/Adam.hpp"
 #include "nn/optimizers/NAG.hpp"
 #include "nn/optimizers/Optimizer.hpp"
