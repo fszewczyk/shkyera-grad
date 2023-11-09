@@ -3,14 +3,15 @@
 <h1>Shkyera Grad</h1>
 
 <i>
- micrograd, but in C++ and better.
+micrograd, but in C++ and better.
 </i>
 <p></p>
 
-![LinuxBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/linux.yml/badge.svg)
-![MacOSBuild](https://github.com/fszewczyk/shkyera-engine/actions/workflows/macos.yml/badge.svg)
-![WindowsBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg)
-![LICENSE](https://img.shields.io/badge/license-Beerware-yellow)
+[![Documentation](https://github.com/fszewczyk/shkyera-grad/actions/workflows/docs.yml/badge.svg)](https://fszewczyk.github.io/shkyera-grad/index.html)
+[![LinuxBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/linux.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/linux.yml)
+[![MacOSBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/macos.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/macos.yml)
+[![WindowsBuild](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml/badge.svg)](https://github.com/fszewczyk/shkyera-grad/actions/workflows/windows.yml)
+[![LICENSE](https://img.shields.io/badge/license-Beerware-yellow)](https://github.com/fszewczyk/shkyera-grad/blob/master/LICENSE)
 
 </div>
 
@@ -26,7 +27,7 @@ Check out oour [Get Started Guide](https://fszewczyk.github.io/shkyera-grad/md_d
 
 Here's a small example showcasing a feed-forward network learning the XOR function. Check out the `examples/` folder for more examples.
 
-```{.cpp}
+```cpp
 #include "shkyera-grad/include/ShkyeraGrad.hpp"
 
 int main() {
@@ -50,6 +51,7 @@ int main() {
                     .add(Linear32::create(5, 1))
                     .add(Sigmoid32::create())
                     .build();
+
 
     auto optimizer = Adam32(network->parameters(), 0.05);
     auto lossFunction = Loss::MSE<T>;
