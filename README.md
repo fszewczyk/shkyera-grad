@@ -27,7 +27,7 @@ Check out oour [Get Started Guide](https://fszewczyk.github.io/shkyera-grad/md_d
 
 Here's a small example showcasing a feed-forward network learning the XOR function. Check out the `examples/` folder for more examples.
 
-```{.cpp}
+```cpp
 #include "shkyera-grad/include/ShkyeraGrad.hpp"
 
 int main() {
