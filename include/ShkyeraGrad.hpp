@@ -8,6 +8,7 @@
 #pragma once
 
 #include "core/Type.hpp"
+#include "core/Utils.hpp"
 #include "core/Value.hpp"
 #include "core/Vector.hpp"
 
