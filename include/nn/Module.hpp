@@ -19,8 +19,17 @@ template <typename T> class Module {
     Module() = default;
 
   public:
-    Vector<T> forward(const Vector<T> &x) const { return (*this)(x); }
+    template <typename U> U forward(const U &x) const { return (*this)(x); }
+
     virtual Vector<T> operator()(const Vector<T> &x) const { return x; }
+    std::vector<Vector<T>> operator()(const std::vector<Vector<T>> &x) const {
+        std::vector<Vector<T>> out(x.size());
+        for (size_t i = 0; i < x.size(); ++i) {
+            out[i] = this->operator()(x[i]);
+        }
+        return out;
+    }
+
     virtual std::vector<ValuePtr<T>> parameters() const { return {}; }
 };
 

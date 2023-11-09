@@ -53,6 +53,8 @@ std::enable_if_t<std::is_integral_v<T>, std::vector<T>> sample(T from, T to, siz
     return sampled;
 }
 
+template <typename T> void shuffle(std::vector<T> &vec) { std::shuffle(vec.begin(), vec.end(), rand_dev); }
+
 template <typename Clock = std::chrono::high_resolution_clock> auto startTimer() { return Clock::now(); }
 
 template <typename Clock = std::chrono::high_resolution_clock>
