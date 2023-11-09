@@ -22,7 +22,7 @@ Here are all the available operations using `Vector`:
 
 ```{.cpp}
 auto a = Vector<float>::of(1, 2, 3);
-auto b = Vector<float>::of({2, 3, 4}); // a[i] == b[i];
+auto b = Vector<float>::of({2, 3, 4}); 
 
 a.size() // 3
 a.dot(b) // 1 * 2 + 2 * 3 + 3 * 4 = 20
