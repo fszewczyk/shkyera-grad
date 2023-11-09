@@ -24,9 +24,7 @@ using SGD64 = SGD<Type::float32>;
 template <typename T> class SGD : public Optimizer<T> {
   private:
     T _momentum;
-    std::unordered_map<Value<T> *, T> _moment;
-
-    T getMoment(const ValuePtr<T> &v);
+    std::vector<T> _moments;
 
   public:
     SGD(std::vector<ValuePtr<T>> params, T learningRate, T momentum = 0.9);
@@ -37,27 +35,21 @@ template <typename T> class SGD : public Optimizer<T> {
 template <typename T>
 SGD<T>::SGD(std::vector<ValuePtr<T>> params, T learningRate, T momentum) : Optimizer<T>(params, learningRate) {
     _momentum = momentum;
+    _moments.resize(params.size(), 0);
 }
 
 template <typename T> void SGD<T>::step() {
     static bool initialized = false;
 
-    for (const ValuePtr<T> &param : this->_parameters) {
+    for (size_t i = 0; i < this->_parameters.size(); ++i) {
+        const ValuePtr<T> &param = this->_parameters[i];
+
         T gradient = param->getGradient();
-        T moment = initialized ? _momentum * getMoment(param) + (1 - _momentum) * gradient : gradient;
-        _moment.insert({param.get(), moment});
+        T moment = initialized ? _momentum * _moments[i] + (1 - _momentum) * gradient : gradient;
+        _moments[i] = moment;
 
         param->_data -= this->_learningRate * moment;
     }
-}
-
-template <typename T> T SGD<T>::getMoment(const ValuePtr<T> &v) {
-    auto moment = _moment.find(v.get());
-    if (moment == _moment.end()) {
-        _moment.insert({v.get(), 0});
-        return 0;
-    }
-    return moment->second;
 }
 
 } // namespace shkyera
