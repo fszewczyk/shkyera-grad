@@ -101,23 +101,35 @@ Types</h1>
 <div class="line">{Class}32 = {Class}&lt;Type::float32&gt; = {Class}&lt;<span class="keywordtype">float</span>&gt;</div>
 <div class="line">{Class}64 = {Class}&lt;Type::float64&gt; = {Class}&lt;<span class="keywordtype">double</span>&gt;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
+Vectors</h1>
+<p>Here are all the available operations using <code>Vector</code>:</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> a = Vector&lt;float&gt;::of(1, 2, 3);</div>
+<div class="line"><span class="keyword">auto</span> b = Vector&lt;float&gt;::of({2, 3, 4}); <span class="comment">// a[i] == b[i];</span></div>
+<div class="line"> </div>
+<div class="line">a.size() <span class="comment">// 3</span></div>
+<div class="line">a.dot(b) <span class="comment">// 1 * 2 + 2 * 3 + 3 * 4 = 20</span></div>
+<div class="line">a.sum()  <span class="comment">// 6</span></div>
+<div class="line">a *= 3   <span class="comment">// a = {3, 6, 9}</span></div>
+<div class="line">a /= 2   <span class="comment">// a = {1.5, 3, 4.5}</span></div>
+<div class="line">a[1]     <span class="comment">// 3</span></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
 Layers</h1>
 <p>Here's a full list of available layers:</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> linear = Linear32::create(inputSize, outputSize);</div>
 <div class="line"><span class="keyword">auto</span> dropout = Dropout32::create(inputSize, outputSize, dropoutRate);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
 Optimizers</h1>
 <p>These are all implemented optimizers:</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> simple = Optimizer32(network-&gt;parameters(), learningRate);</div>
 <div class="line"><span class="keyword">auto</span> sgdWithMomentum = SGD32(network-&gt;parameters(), learningRate, momentum = 0.9);</div>
-<div class="line"><span class="keyword">auto</span> adam = Adam32(network-&gt;parameters(), learningRate, beta1 = 0.9, beta2=0.999, epsilon=1e-8);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
+<div class="line"><span class="keyword">auto</span> adam = Adam32(network-&gt;parameters(), learningRate, beta1 = 0.9, beta2 = 0.999, epsilon = 1e-8);</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
 Loss functions</h1>
 <p>Optimization can be performed according to these predefined loss functions:</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> L1 = Loss::MAE32;</div>
 <div class="line"><span class="keyword">auto</span> L2 = Loss::MSE32;</div>
 <div class="line"><span class="keyword">auto</span> crossEntropy = Loss::CrossEntropy32;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md8"></a>
 Generic Training Loop</h1>
 <p>Simply copy-pase this code to quickly train your network:</p>
 <div class="fragment"><div class="line"><span class="keyword">using</span> T = Type::float32; <span class="comment">// feel free to change it to float64</span></div>
