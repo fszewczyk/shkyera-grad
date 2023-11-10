@@ -233,7 +233,7 @@ for (size_t sample = 0; sample < xs.size(); ++sample) {         // Go through ea
 }
 ```
 
-In case you got lost along the way, check out the `examples/xor_regression.cpp` file. It contains the exact same code and is ready to run :)
+In case you got lost along the way, check out the `examples/xor.cpp` file. It contains the exact same code and is ready to run :)
 
 ### Results
 

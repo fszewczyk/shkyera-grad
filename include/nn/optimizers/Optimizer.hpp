@@ -36,7 +36,8 @@ Optimizer<T>::Optimizer(std::vector<ValuePtr<T>> params, T learningRate) : _lear
 }
 
 template <typename T> void Optimizer<T>::reset() {
-    std::for_each(_parameters.begin(), _parameters.end(), [](ValuePtr<T> val) { val->_gradient = 0; });
+    for (ValuePtr<T> &val : _parameters)
+        val->_gradient = 0;
 }
 
 template <typename T> void Optimizer<T>::step() {

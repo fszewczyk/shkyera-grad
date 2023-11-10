@@ -3,7 +3,7 @@
 To compile an example, simply run the following command:
 
 ```
-g++ --std=c++17 xor_nn.cpp
+g++ --std=c++17 xor.cpp
 ```
 
 Remember to replace the file name with the appropriate name :)

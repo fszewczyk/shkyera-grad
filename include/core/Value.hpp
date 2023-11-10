@@ -238,6 +238,11 @@ template <typename T> void Value<T>::backward() {
     for (auto val = sorted.rbegin(); val != sorted.rend(); val++) {
         (*val)->_backward();
     }
+
+    for (auto s : sorted) {
+        s->_children = {};
+        s->_backward = []() {};
+    }
 }
 
 template <typename T> std::ostream &operator<<(std::ostream &os, const ValuePtr<T> &value) {
