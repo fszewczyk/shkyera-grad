@@ -30,4 +30,4 @@ jobs:
           CXX: ${{matrix.conf.compiler}}
         run: |
           g++ -o out examples/scalars.cpp -O3 --std=c++17
-          g++ -o out examples/xor_regression.cpp -O3 --std=c++17
+          g++ -o out examples/xor.cpp -O3 --std=c++17

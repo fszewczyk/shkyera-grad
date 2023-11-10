@@ -8,6 +8,7 @@
 #pragma once
 
 #include <exception>
+#include <numeric>
 
 #include "Type.hpp"
 #include "Value.hpp"
@@ -30,10 +31,12 @@ template <typename T> class Vector {
 
     static Vector<T> of(const std::vector<T> &values);
     template <typename... Args> static Vector<T> of(const Args &...args);
+    static Vector<T> oneHotEncode(size_t index, size_t size);
 
     ValuePtr<T> dot(const Vector<T> &other) const;
     ValuePtr<T> sum() const;
     size_t size() const;
+    size_t argMax() const;
 
     template <typename U> friend std::ostream &operator<<(std::ostream &os, const Vector<U> &vector);
 
@@ -85,7 +88,32 @@ template <typename T> template <typename... Args> Vector<T> Vector<T>::of(const 
     return Vector<T>(valuePtrs);
 }
 
+template <typename T> Vector<T> Vector<T>::oneHotEncode(size_t index, size_t size) {
+    std::vector<ValuePtr<T>> valuePtrs(size);
+
+    for (size_t i = 0; i < size; ++i) {
+        if (i == index)
+            valuePtrs[i] = Value<T>::create(1);
+        else
+            valuePtrs[i] = Value<T>::create(0);
+    }
+
+    return valuePtrs;
+}
+
 template <typename T> size_t Vector<T>::size() const { return _values.size(); }
+
+template <typename T> size_t Vector<T>::argMax() const {
+    T largest = std::numeric_limits<T>::lowest();
+    size_t largestIndex = 0;
+    for (size_t i = 0; i < _values.size(); ++i) {
+        if (_values[i]->getValue() > largest) {
+            largest = _values[i]->getValue();
+            largestIndex = i;
+        }
+    }
+    return largestIndex;
+}
 
 template <typename T> ValuePtr<T> Vector<T>::dot(const Vector<T> &other) const {
     if (other.size() != size()) {

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "core/Image.hpp"
 #include "core/Type.hpp"
 #include "core/Utils.hpp"
 #include "core/Value.hpp"

@@ -32,5 +32,5 @@ jobs:
         run: |
           g++ examples/scalars.cpp -O3 --std=c++17
           ./a.out
-          g++ examples/xor_regression.cpp -O3 --std=c++17
+          g++ examples/xor.cpp -O3 --std=c++17
           ./a.out

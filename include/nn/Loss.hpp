@@ -71,10 +71,13 @@ Function<T> CrossEntropy = [](Vector<T> a, Vector<T> b) {
                                     std::to_string(aSum->getValue()) + " and " + std::to_string(bSum->getValue()) +
                                     ".");
     }
-
+    auto eps = Value<T>::create(1e-8);
     auto loss = Value<T>::create(0);
     for (size_t i = 0; i < a.size(); ++i) {
-        loss = loss - (b[i] * (a[i]->log()));
+        if (a[i] < eps)
+            loss = loss - (b[i] * (eps->log()));
+        else
+            loss = loss - (b[i] * (a[i]->log()));
     }
 
     return loss;
